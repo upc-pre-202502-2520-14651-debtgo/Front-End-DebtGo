@@ -1,0 +1,44 @@
+<section class="consultant-reviews">
+  <h2>⭐ Mis Reseñas como Consultor</h2>
+
+  <!-- Promedio general -->
+  <div class="stats">
+    <h3>🌟 Promedio general: {{ promedio | number:'1.1-2' }} / 5</h3>
+    <p>Total de reseñas: {{ reviews.length }}</p>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filters">
+    <label>Filtrar por puntuación:</label>
+    <select [(ngModel)]="filtro" (change)="filtrarResenas()">
+      <option value="">Todas</option>
+      <option *ngFor="let n of [5,4,3,2,1]" [value]="n">{{ n }} estrellas</option>
+    </select>
+  </div>
+
+  <!-- Grid -->
+  <div class="reviews-grid">
+    <div class="review-card" *ngFor="let r of reviewsFiltradas">
+      <div class="header">
+        <h3>💬 {{ r.comment }}</h3>
+        <p class="stars">⭐ {{ r.rating }} / 5</p>
+      </div>
+      <small>👤 Emprendedor: {{ r.entrepreneurName }}</small>
+
+      <!-- Campo de respuesta -->
+      <div class="reply" *ngIf="!r.reply">
+        <textarea [(ngModel)]="r.tempReply" placeholder="Responder a esta reseña..."></textarea>
+        <button (click)="responder(r)">Responder</button>
+      </div>
+
+      <div class="reply-text" *ngIf="r.reply">
+        <strong>Tu respuesta:</strong>
+        <p>{{ r.reply }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="!reviewsFiltradas.length" class="empty">
+      🚫 No tienes reseñas con este filtro
+    </div>
+  </div>
+</section>

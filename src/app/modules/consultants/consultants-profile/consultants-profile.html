@@ -1,0 +1,21 @@
+<section class="c-profile" *ngIf="consultant">
+  <h2>✏️ Mi Perfil</h2>
+  <div class="form">
+    <label>Nombre</label>
+    <input [(ngModel)]="consultant.fullName" type="text"/>
+
+    <label>Especialidad</label>
+    <input [(ngModel)]="consultant.specialty" type="text"/>
+
+    <label>Experiencia</label>
+    <input [(ngModel)]="consultant.experience" type="text" placeholder="Ej: 5 años"/>
+
+    <label>Descripción</label>
+    <textarea [(ngModel)]="consultant.description" rows="4"></textarea>
+
+    <label>Tarifa por hora (S/)</label>
+    <input [(ngModel)]="consultant.hourlyRate" type="number"/>
+
+    <button (click)="guardar()">💾 Guardar</button>
+  </div>
+</section>

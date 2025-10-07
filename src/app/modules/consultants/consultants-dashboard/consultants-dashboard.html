@@ -1,0 +1,9 @@
+<section class="c-dashboard">
+  <h1>👨‍💼 Panel del Consultor</h1>
+  <div class="grid" *ngIf="summary">
+    <div class="card c1"><h3>👥 Clientes atendidos</h3><p>{{ summary.servedClients }}</p></div>
+    <div class="card c2"><h3>📅 Asesorías activas</h3><p>{{ summary.activeAdvisories }}</p></div>
+    <div class="card c3"><h3>💼 Servicios publicados</h3><p>{{ summary.publishedServices }}</p></div>
+    <div class="card c4"><h3>⭐ Calificación promedio</h3><p>{{ summary.avgRating | number:'1.1-1' }}</p></div>
+  </div>
+</section>

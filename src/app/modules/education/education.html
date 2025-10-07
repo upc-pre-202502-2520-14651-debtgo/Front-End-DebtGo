@@ -1,0 +1,92 @@
+<section class="edu-dashboard">
+  <header class="edu-header">
+    <div class="edu-header-text">
+      <h1>🎓 Educación Financiera DebtGo</h1>
+      <p>Desarrolla tus habilidades financieras con recursos interactivos y asesorías virtuales.</p>
+    </div>
+
+    <div class="edu-search">
+      <input type="text" placeholder="🔍 Buscar temas, cursos o estrategias..." />
+    </div>
+  </header>
+
+  <div class="edu-overview">
+    <div class="overview-card c1">
+      <div class="icon">💰</div>
+      <div>
+        <h3>Finanzas Personales</h3>
+        <p>Gestiona mejor tus ingresos y gastos mensuales.</p>
+      </div>
+    </div>
+
+    <div class="overview-card c2">
+      <div class="icon">📈</div>
+      <div>
+        <h3>Inversiones Inteligentes</h3>
+        <p>Descubre cómo multiplicar tu dinero sin asumir grandes riesgos.</p>
+      </div>
+    </div>
+
+    <div class="overview-card c3">
+      <div class="icon">🏦</div>
+      <div>
+        <h3>Crédito Responsable</h3>
+        <p>Aprende a usar el crédito como una herramienta útil, no una carga.</p>
+      </div>
+    </div>
+
+    <div class="overview-card c4">
+      <div class="icon">🎯</div>
+      <div>
+        <h3>Ahorro Estratégico</h3>
+        <p>Implementa métodos prácticos para alcanzar tus metas financieras.</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="edu-content">
+    <h2>📚 Recursos Destacados</h2>
+
+    <div class="edu-grid">
+      <div *ngFor="let recurso of education" class="edu-card">
+        <div class="edu-card-header">
+          <div class="edu-icon" [ngClass]="{
+            'icon-debt': recurso.category === 'Deudas',
+            'icon-invest': recurso.category === 'Inversiones',
+            'icon-saving': recurso.category === 'Ahorro',
+            'icon-credit': recurso.category === 'Crédito'
+          }"></div>
+        </div>
+
+        <div class="edu-card-body">
+          <h3>{{ recurso.title }}</h3>
+          <p><strong>Categoría:</strong> {{ recurso.category }}</p>
+          <p><strong>Nivel:</strong> {{ recurso.level }}</p>
+
+          <!-- Botones dinámicos (ahora se muestran ambos si existen) -->
+          <div class="edu-actions">
+            <button
+              *ngIf="recurso.pdfLink"
+              class="btn-pdf"
+              (click)="abrirRecurso(recurso.pdfLink)">
+              📘 Ver Documento
+            </button>
+
+            <button
+              *ngIf="recurso.videoLink"
+              class="btn-video"
+              (click)="abrirRecurso(recurso.videoLink)">
+              🎥 Ver Video
+            </button>
+
+            <button
+              *ngIf="!recurso.pdfLink && !recurso.videoLink"
+              class="btn-disabled" disabled>
+              🚫 Sin recurso disponible
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>

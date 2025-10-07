@@ -1,0 +1,27 @@
+<section class="c-services">
+  <h2>🧩 Mis Servicios</h2>
+
+  <div class="new">
+    <input [(ngModel)]="nuevo.title" placeholder="Título del servicio"/>
+    <input [(ngModel)]="nuevo.price" type="number" placeholder="Precio (S/)"/>
+    <textarea [(ngModel)]="nuevo.description" rows="2" placeholder="Descripción"></textarea>
+    <button (click)="crear()">➕ Agregar</button>
+  </div>
+
+  <table class="tbl" *ngIf="items.length">
+    <thead><tr><th>Título</th><th>Precio</th><th>Descripción</th><th></th></tr></thead>
+    <tbody>
+      <tr *ngFor="let it of items">
+        <td><input [(ngModel)]="it.title"/></td>
+        <td><input [(ngModel)]="it.price" type="number"/></td>
+        <td><input [(ngModel)]="it.description"/></td>
+        <td class="actions">
+          <button (click)="guardar(it)">💾</button>
+          <button class="danger" (click)="eliminar(it.id)">🗑</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!items.length" class="empty">Aún no tienes servicios publicados.</div>
+</section>

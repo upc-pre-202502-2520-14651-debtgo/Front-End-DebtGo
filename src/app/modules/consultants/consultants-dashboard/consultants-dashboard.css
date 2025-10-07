@@ -1,0 +1,15 @@
+.c-dashboard { padding: 30px; font-family: 'Segoe UI', sans-serif; }
+
+.c-dashboard h1 { color:#1e3a8a; margin-bottom: 18px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 16px; }
+
+.card { background:#fff; border-radius:14px; padding:18px; box-shadow:0 2px 12px rgba(0,0,0,.08); }
+
+.card h3 { color:#334155; font-size:14px; margin:0 0 8px; }
+
+.card p { font-size:24px; font-weight:bold; color:#0f172a; }
+
+.c1{border-top:4px solid #2563eb} .c2{border-top:4px solid #10b981}
+
+.c3{border-top:4px solid #8b5cf6} .c4{border-top:4px solid #f59e0b}

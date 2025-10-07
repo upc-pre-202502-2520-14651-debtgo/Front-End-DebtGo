@@ -1,0 +1,13 @@
+.c-profile{ padding:26px; font-family:'Segoe UI',sans-serif; }
+
+.c-profile h2{ color:#1e3a8a; margin-bottom:16px; }
+
+.form{ background:#fff; border-radius:14px; padding:18px; box-shadow:0 2px 12px rgba(0,0,0,.08); max-width:600px; }
+
+label{ font-weight:600; color:#334155; margin-top:10px; display:block; }
+
+input,textarea{ width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-top:4px; }
+
+button{ margin-top:16px; background:linear-gradient(90deg,#2563eb,#6d28d9); color:#fff; padding:10px 16px; border:none; border-radius:10px; font-weight:600; cursor:pointer; }
+
+button:hover{ background:#1e40af; transform:translateY(-1px); }

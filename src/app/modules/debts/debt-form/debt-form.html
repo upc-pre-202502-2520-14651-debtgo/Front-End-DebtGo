@@ -1,0 +1,34 @@
+<section class="debt-form">
+  <form (ngSubmit)="registrarDeuda()" #form="ngForm">
+    <div class="form-group">
+      <label>👤 Nombre del Cliente</label>
+      <input type="text" [(ngModel)]="nuevaDeuda.clientName" name="clientName" required />
+    </div>
+
+    <div class="form-group">
+      <label>💰 Total Deuda (S/)</label>
+      <input type="number" [(ngModel)]="nuevaDeuda.totalDebt" name="totalDebt" required />
+    </div>
+
+    <div class="form-group">
+      <label>💳 Pago Mensual (S/)</label>
+      <input type="number" [(ngModel)]="nuevaDeuda.monthlyPayment" name="monthlyPayment" required />
+    </div>
+
+    <div class="form-group">
+      <label>📅 Fecha de Vencimiento</label>
+      <input type="date" [(ngModel)]="nuevaDeuda.dueDate" name="dueDate" />
+    </div>
+
+    <div class="form-group">
+      <label>📊 Estado</label>
+      <select [(ngModel)]="nuevaDeuda.status" name="status">
+        <option value="ACTIVE">Activo</option>
+        <option value="PAID">Pagado</option>
+        <option value="LATE">Vencido</option>
+      </select>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid">💾 Guardar Deuda</button>
+  </form>
+</section>

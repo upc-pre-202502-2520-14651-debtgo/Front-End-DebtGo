@@ -1,0 +1,27 @@
+<div class="payment-container">
+  <h2>Configura tu método de pago</h2>
+
+  <select [(ngModel)]="method" required>
+    <option value="" disabled selected>Selecciona un método</option>
+    <option value="BANK">Cuenta Bancaria</option>
+    <option value="PAYPAL">PayPal</option>
+    <option value="STRIPE">Stripe</option>
+  </select>
+
+  <div *ngIf="method === 'BANK'">
+    <input type="text" [(ngModel)]="account" placeholder="Número de cuenta bancaria" required />
+    <input type="text" [(ngModel)]="bankName" placeholder="Nombre del banco" required />
+  </div>
+
+  <div *ngIf="method === 'PAYPAL'">
+    <input type="email" [(ngModel)]="account" placeholder="Correo de PayPal" required />
+  </div>
+
+  <div *ngIf="method === 'STRIPE'">
+    <input type="text" [(ngModel)]="account" placeholder="Stripe ID" required />
+  </div>
+
+  <button (click)="saveMethod()">Guardar Método</button>
+
+  <p *ngIf="message" class="message">{{ message }}</p>
+</div>

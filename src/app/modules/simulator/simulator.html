@@ -1,0 +1,109 @@
+<section class="simu">
+  <h2>🧮 Simulador de Pagos</h2>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button [class.active]="modo === 'nuevo'" (click)="modo='nuevo'">Nueva simulación</button>
+    <button [class.active]="modo === 'historial'" (click)="modo='historial'">Mis simulaciones</button>
+  </div>
+
+  <!-- NUEVA SIMULACIÓN -->
+  <div *ngIf="modo === 'nuevo'" class="grid">
+    <div class="card form">
+      <div class="row"><label>Monto (S/)</label>
+        <input type="number" min="0" [(ngModel)]="monto" (input)="simular()" />
+      </div>
+      <div class="row"><label>Tasa anual (%)</label>
+        <input type="number" min="0" step="0.01" [(ngModel)]="tasa" (input)="simular()" />
+      </div>
+      <div class="row"><label>Plazo (meses)</label>
+        <input type="number" min="1" [(ngModel)]="plazo" (input)="simular()" />
+      </div>
+      <div class="row"><label>Pago extra mensual (opcional)</label>
+        <input type="number" min="0" [(ngModel)]="extra" (input)="simular()" />
+      </div>
+      <div class="row"><label>Fecha de inicio</label>
+        <input type="date" [(ngModel)]="fechaInicio" (change)="simular()" />
+      </div>
+
+      <div class="actions">
+        <button class="primary" (click)="simular()">Calcular</button>
+        <button class="ghost" (click)="reset()">Limpiar</button>
+        <button class="ghost" [disabled]="!valido" (click)="guardar()">Guardar</button>
+        <button class="ghost" [disabled]="!cuotas().length" (click)="exportCSV()">Exportar CSV</button>
+      </div>
+    </div>
+
+    <!-- RESUMEN -->
+    <div class="col">
+      <div class="card kpi">
+        <h3>Cuota estimada</h3>
+        <p>S/ {{ cuotaMensual() | number:'1.2-2' }}</p>
+      </div>
+      <div class="card kpi">
+        <h3>Interés total</h3>
+        <p>S/ {{ interesTotal() | number:'1.2-2' }}</p>
+      </div>
+      <div class="card kpi">
+        <h3>Pago total</h3>
+        <p>S/ {{ pagoTotal() | number:'1.2-2' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLA DETALLE -->
+  <table class="tbl" *ngIf="modo==='nuevo' && cuotas().length">
+    <thead>
+      <tr>
+        <th>#</th><th>Fecha</th><th>Cuota</th><th>Interés</th><th>Capital</th><th>Saldo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of cuotas()">
+        <td>{{ r.n }}</td><td>{{ r.date }}</td>
+        <td>{{ r.payment | number:'1.2-2' }}</td>
+        <td>{{ r.interest | number:'1.2-2' }}</td>
+        <td>{{ r.principal | number:'1.2-2' }}</td>
+        <td>{{ r.balance | number:'1.2-2' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="modo==='nuevo' && !cuotas().length" class="empty">
+    Ingresa los datos y presiona <b>Calcular</b> para ver tu plan.
+  </div>
+
+  <!-- ACCIONES DE EXPORTACIÓN -->
+<div class="export-actions" *ngIf="modo==='nuevo' && cuotas().length">
+  <button class="export-btn csv" (click)="exportCSV()">💾 Exportar CSV</button>
+  <button class="export-btn pdf" (click)="exportarPDF()">📄 Descargar PDF profesional</button>
+</div>
+
+<!-- HISTORIAL -->
+<div *ngIf="modo==='historial'">
+  <div *ngIf="historial.length; else vacio">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>ID</th><th>Monto (S/)</th><th>Tasa (%)</th><th>Meses</th>
+          <th>Cuota (S/)</th><th>Total Pago</th><th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let h of historial">
+          <td>{{ h.id }}</td>
+          <td>{{ h.amount }}</td>
+          <td>{{ h.annualRate }}</td>
+          <td>{{ h.months }}</td>
+          <td>{{ h.monthlyPayment | number:'1.2-2' }}</td>
+          <td>{{ h.totalPayment | number:'1.2-2' }}</td>
+          <td><button (click)="usar(h)">Reutilizar</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+    <ng-template #vacio>
+      <div class="empty">Aún no tienes simulaciones guardadas.</div>
+    </ng-template>
+</div>
+</section>

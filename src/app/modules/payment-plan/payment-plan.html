@@ -1,0 +1,67 @@
+<div class="payment-container">
+
+  <!-- Barra superior con flecha -->
+  <div class="payment-header" *ngIf="selectedPlan">
+    <span class="back-arrow" (click)="goBack()">← Back</span>
+  </div>
+
+  <!-- Título centrado -->
+  <h2 *ngIf="!selectedPlan" class="title">Select a Plan</h2>
+
+  <div class="plans" *ngIf="!selectedPlan">
+    <!-- Basic -->
+    <div class="plan-card" (click)="choosePlan('BASIC')">
+      <h3>💼 Basic</h3>
+      <p class="price">S/ 80 <span>/month</span></p>
+      <ul>
+        <li>✔ Basic debt management tools</li>
+        <li>✔ Income and expense tracking</li>
+        <li>✔ Budget creation tools</li>
+        <li>✔ Access to financial education materials</li>
+      </ul>
+      <button>Choose Basic</button>
+    </div>
+
+    <!-- Premium -->
+    <div class="plan-card" (click)="choosePlan('PREMIUM')">
+      <h3>⭐ Premium</h3>
+      <p class="price">S/ 150 <span>/month</span></p>
+      <ul>
+        <li>✔ All Basic features</li>
+        <li>✔ Personalized financial consulting</li>
+        <li>✔ Priority customer support</li>
+      </ul>
+      <button>Choose Premium</button>
+    </div>
+  </div>
+
+  <!-- Formulario de Pago -->
+  <div *ngIf="selectedPlan" class="payment-form">
+    <h3>Complete Payment - {{ selectedPlan }}</h3>
+    
+    <div class="input-group">
+      <span class="icon">👤</span>
+      <input type="text" [(ngModel)]="cardName" placeholder="Cardholder Name" required />
+    </div>
+
+    <div class="input-group">
+      <span class="icon">💳</span>
+      <input type="text" [(ngModel)]="cardNumber" placeholder="Card Number" maxlength="16" required />
+    </div>
+
+    <div class="row">
+      <div class="input-group">
+        <span class="icon">📅</span>
+        <input type="text" [(ngModel)]="expiry" placeholder="MM/YY" maxlength="5" required />
+      </div>
+      <div class="input-group">
+        <span class="icon">🔒</span>
+        <input type="text" [(ngModel)]="cvv" placeholder="CVV" maxlength="3" required />
+      </div>
+    </div>
+
+    <button (click)="processPayment()">💼 Confirm Secure Payment</button>
+
+    <p *ngIf="message" class="message">{{ message }}</p>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<section class="debt-dashboard">
+  <header class="debt-header">
+    <div class="debt-header-text">
+      <h1>💼 Gestión de Deudas - Consultor</h1>
+      <p>Administra los planes de pago, analiza riesgos y mejora la salud financiera de tus clientes.</p>
+    </div>
+  </header>
+
+  <!-- MÉTRICAS -->
+  <div class="debt-overview" *ngIf="resumen">
+    <div class="overview-card c1"><h3>👥 Clientes Activos</h3><p>{{ resumen.activeClients }}</p></div>
+    <div class="overview-card c2"><h3>📉 Deudas Vencidas</h3><p>{{ resumen.overdueDebts }}</p></div>
+    <div class="overview-card c3"><h3>💳 Planes en Curso</h3><p>{{ resumen.activePlans }}</p></div>
+    <div class="overview-card c4"><h3>📊 Cumplimiento</h3><p>{{ resumen.complianceRate }}%</p></div>
+  </div>
+
+  <!-- BOTÓN PARA MOSTRAR/OCULTAR FORMULARIO -->
+  <div class="toggle-form">
+    <button (click)="toggleFormulario()">
+      {{ mostrarFormulario ? '✖️ Cerrar formulario' : '➕ Nueva Deuda' }}
+    </button>
+  </div>
+
+  <!-- FORMULARIO DESPLEGABLE -->
+  <section *ngIf="mostrarFormulario" class="debt-form-container animate-fade">
+    <h2>➕ Registrar Nueva Deuda</h2>
+    <app-debt-form (deudaCreada)="onDeudaCreada()"></app-debt-form>
+  </section>
+
+  <!-- TABLA DE DEUDAS -->
+  <section class="debt-content">
+    <h2>📋 Lista de Clientes</h2>
+
+    <div *ngIf="cargando" class="loading">Cargando información...</div>
+
+    <table *ngIf="!cargando" class="debt-table">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Total Deuda (S/)</th>
+          <th>Pago Mensual</th>
+          <th>Vencimiento</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of deudas">
+          <td>{{ d.clientName }}</td>
+          <td>{{ d.totalDebt | number:'1.2-2' }}</td>
+          <td>{{ d.monthlyPayment | number:'1.2-2' }}</td>
+          <td>{{ d.dueDate | date:'dd/MM/yyyy' }}</td>
+          <td><span [class]="obtenerColorEstado(d.status)">{{ d.status }}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</section>

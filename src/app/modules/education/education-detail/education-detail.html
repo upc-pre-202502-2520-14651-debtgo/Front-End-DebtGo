@@ -1,0 +1,57 @@
+<section class="edu-detail" *ngIf="!isLoading && recurso">
+  <div class="edu-header">
+    <button class="back" routerLink="/education">⬅ Volver</button>
+    <h1>{{ recurso.title }}</h1>
+    <p class="level">Nivel: {{ recurso.level }}</p>
+  </div>
+
+  <div class="edu-body">
+    <div class="edu-info">
+      <h3>📂 Categoría: {{ recurso.category }}</h3>
+      <p>
+        Bienvenido al recurso <strong>{{ recurso.title }}</strong>, una guía
+        para fortalecer tus conocimientos financieros y tomar decisiones más informadas.
+      </p>
+
+      <div class="edu-resource-viewer">
+        <h4>📘 Documento educativo</h4>
+        <iframe
+          *ngIf="recurso.pdfLink"
+          [src]="recurso.pdfLink | safeUrl"
+          frameborder="0"
+          class="pdf-viewer"
+        ></iframe>
+
+        <div *ngIf="!recurso.pdfLink" class="no-resource">
+          📄 Este curso no tiene documento disponible.
+        </div>
+
+        <h4>🎥 Video educativo</h4>
+        <iframe
+          *ngIf="recurso.videoLink"
+          [src]="recurso.videoLink | safeUrl"
+          frameborder="0"
+          allowfullscreen
+          class="video-viewer"
+        ></iframe>
+
+        <div *ngIf="!recurso.videoLink" class="no-resource">
+          🎬 No hay video disponible para este tema.
+        </div>
+      </div>
+    </div>
+
+    <div class="edu-media">
+      <img [src]="getCategoryIcon(recurso.category)" alt="Icono educativo" />
+    </div>
+  </div>
+</section>
+
+<div *ngIf="isLoading" class="loading">
+  <div class="spinner"></div>
+  <p>Cargando recurso...</p>
+</div>
+
+<div *ngIf="!isLoading && errorMessage" class="error-message">
+  ⚠️ {{ errorMessage }}
+</div>

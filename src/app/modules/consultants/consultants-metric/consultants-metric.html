@@ -1,0 +1,9 @@
+<section class="c-metrics" *ngIf="metrics">
+  <h2>📊 Métricas</h2>
+  <div class="grid">
+    <div class="card"><h3>Sesiones realizadas</h3><p>{{ metrics.sessions }}</p></div>
+    <div class="card"><h3>Promedio de rating</h3><p>{{ metrics.avgRating | number:'1.1-1' }}</p></div>
+    <div class="card"><h3>Porcentaje cumplimiento</h3><p>{{ metrics.compliance }}%</p></div>
+    <div class="card"><h3>Ingresos (S/)</h3><p>{{ metrics.revenue | number:'1.2-2' }}</p></div>
+  </div>
+</section>

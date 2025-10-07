@@ -1,0 +1,24 @@
+<header class="navbar" *ngIf="initialized && isLoggedIn() && showNavbar">
+  <div class="navbar-logo">
+    <span class="logo-text">DEBT<span>GO</span></span>
+  </div>
+
+  <nav class="req-nav">
+    <a routerLink="/home" routerLinkActive="active">INICIO</a>
+    <a routerLink="/education" routerLinkActive="active">EDUCACIÓN FINANCIERA</a>
+    <a routerLink="/debts" routerLinkActive="active">DEUDAS</a>
+    <a routerLink="/consultant/list" routerLinkActive="active">CONSULTORES</a>
+    <a routerLink="/payment-history" routerLinkActive="active">HISTORIAL DE PAGOS</a>
+    <a routerLink="/simulator" routerLinkActive="active">SIMULADOR DE PAGOS</a>
+    <a routerLink="/reviews" routerLinkActive="active">RESEÑAS</a>
+    <a routerLink="/dashboard" routerLinkActive="active">DASHBOARD</a>
+  </nav>
+
+  <div class="navbar-actions">
+    <button class="btn-logout" (click)="logout()">CERRAR SESIÓN</button>
+  </div>
+</header>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

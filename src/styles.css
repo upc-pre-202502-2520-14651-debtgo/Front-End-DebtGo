@@ -1,1 +1,167 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&display=swap');
+@import 'toastify-js/src/toastify.css';
+
+body {
+  margin: 0;
+  font-family: 'Urbanist', sans-serif;
+  background: linear-gradient(135deg, #998EF7, #9B6CF0);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container {
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.12);
+  width: 380px;
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+h2 {
+  margin-bottom: 0.5rem;
+  color: #3D3D3D;
+  font-weight: 700;
+}
+
+p {
+  color: #939393;
+  margin-bottom: 1.5rem;
+}
+
+input,
+select {
+  width: 100%;
+  margin: 10px 0;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+  background: #F3F3FF;
+  transition: all 0.3s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: #998EF7;
+  background: #fff;
+  outline: none;
+  box-shadow: 0 0 10px rgba(153, 142, 247, 0.4);
+}
+
+/* Password con icono */
+.password-container {
+  position: relative;
+}
+.password-container input {
+  padding-right: 40px;
+}
+.password-container .toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 14px;
+  color: #7960F2;
+}
+
+/* Botón */
+button {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: #3D3D3D;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  background: #7960F2;
+  transform: translateY(-2px);
+  box-shadow: 0px 8px 20px rgba(123, 104, 238, 0.5);
+}
+
+/* Switch login/register */
+.switch {
+  margin-top: 1.5rem;
+}
+.switch a {
+  color: #7960F2;
+  font-weight: 600;
+  text-decoration: none;
+}
+.switch a:hover {
+  text-decoration: underline;
+}
+
+.message {
+  margin-top: 1rem;
+  color: #7960F2;
+  font-weight: 500;
+}
+
+section { margin-top: 100px; padding: 20px; }
+
+h2 { font-size: 24px; margin-bottom: 20px; color: #1e1e2f; }
+
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th, td { padding: 12px; border-bottom: 1px solid #eee; }
+th { background: #f9f9f9; }
+
+.status { font-weight: bold; padding: 4px 8px; border-radius: 6px; }
+.status.paid { background: #e8f5e9; color: #2e7d32; }
+.status.ongoing { background: #fff3e0; color: #ff9800; }
+.status.overdue { background: #ffebee; color: #d32f2f; }
+
+.card, .consultor-card, .plan-card, .resource-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+  transition: 0.3s;
+}
+.card:hover, .consultor-card:hover, .plan-card:hover, .resource-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+}
+
+button {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  border: none;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+button:hover {
+  background: linear-gradient(135deg, #2575fc, #6a11cb);
+}
+button.danger { background: #d9534f; }
+
+/* Transición global entre componentes */
+router-outlet ~ * {
+  display: block;
+  animation: routeChange 0.35s ease-in-out;
+}
+
+@keyframes routeChange {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

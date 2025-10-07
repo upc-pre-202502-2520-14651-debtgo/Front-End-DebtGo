@@ -1,0 +1,54 @@
+<section class="payment-history">
+  <h2>💰 Historial de Pagos</h2>
+
+  <!-- Resumen -->
+  <div class="summary">
+    <div class="card"><h3>Total recibido</h3><p>S/ {{ resumen.total | number:'1.2-2' }}</p></div>
+    <div class="card"><h3>Pagos pendientes</h3><p>S/ {{ resumen.pendientes | number:'1.2-2' }}</p></div>
+    <div class="card"><h3>Transacciones</h3><p>{{ pagos.length }}</p></div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filters">
+    <input type="month" [(ngModel)]="filtroMes" (change)="filtrarPagos()" />
+    <select [(ngModel)]="filtroEstado" (change)="filtrarPagos()">
+      <option value="">Todos</option>
+      <option value="Pagado">Pagado</option>
+      <option value="Pendiente">Pendiente</option>
+      <option value="En revisión">En revisión</option>
+    </select>
+  </div>
+
+  <!-- Tabla de pagos -->
+  <table class="tbl" *ngIf="pagosFiltrados.length">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Servicio</th>
+        <th>Monto (S/)</th>
+        <th>Estado</th>
+        <th>Comprobante</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of pagosFiltrados">
+        <td>{{ p.paymentDate | date:'dd/MM/yyyy' }}</td>
+        <td>{{ p.serviceName }}</td>
+        <td>{{ p.amount | number:'1.2-2' }}</td>
+        <td>
+          <span class="badge"
+                [class.paid]="p.status==='Pagado'"
+                [class.pending]="p.status==='Pendiente'"
+                [class.review]="p.status==='En revisión'">
+            {{ p.status }}
+          </span>
+        </td>
+        <td><button (click)="descargarComprobante(p)">📄</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!pagosFiltrados.length" class="empty">
+    No hay pagos registrados.
+  </div>
+</section>
