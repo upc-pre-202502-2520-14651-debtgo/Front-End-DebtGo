@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../environments/environment';
 
 export interface PaymentHistory {
   id: number;
@@ -13,7 +13,7 @@ export interface PaymentHistory {
 
 @Injectable({ providedIn: 'root' })
 export class PaymentHistoryService {
-  private apiUrl = 'http://localhost:8080/api/pagos';
+  private apiUrl = `${environment}/api/pagos`;
 
   constructor(private http: HttpClient) {}
 

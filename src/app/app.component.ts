@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -17,11 +18,14 @@ export class AppComponent implements OnInit {
   private hiddenRoutes = ['/login', '/register', '/payment-plan', '/payment-method'];
 
   constructor(private router: Router) {
+    console.log('🧠 Environment actual:', environment);
       this.router.events
     .pipe(filter(event => event instanceof NavigationEnd))
     .subscribe((event: NavigationEnd) => {
       this.updateNavbarVisibility(event.url);
     });
+
+
   }
 
     ngOnInit() {

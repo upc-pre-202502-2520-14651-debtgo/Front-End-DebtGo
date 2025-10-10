@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface SimulationReq {
   amount: number;
@@ -23,7 +24,7 @@ export interface SimulationRes {
 
 @Injectable({ providedIn: 'root' })
 export class SimulatorService {
-  private baseUrl = 'http://localhost:8080/api/v1/simulations';
+  private baseUrl = `${environment.apiUrl}/api/v1/simulations`;
 
   constructor(private http: HttpClient) {}
 

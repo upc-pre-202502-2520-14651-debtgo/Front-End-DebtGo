@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 /** ====== MODELOS ====== */
 export interface HomeSummary {
@@ -36,7 +37,7 @@ export interface EducationHighlight {
 /** ====== SERVICIO ====== */
 @Injectable({ providedIn: 'root' })
 export class HomeService {
-  private base = 'http://localhost:8080/api/home';
+  private base = `${environment.apiUrl}/api/home`;
 
   constructor(private http: HttpClient) {}
 
