@@ -1,3 +1,17 @@
+/* NAVBAR SUPERIOR CONSULTOR */
+.consultant-top-nav {
+  width: 100%;
+  padding: 18px 40px;
+  background: #0e2a6b;
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  margin-bottom: 30px;
+}
+
 /* Fondo general */
 .home-container {
   padding: 40px 8%;
@@ -197,6 +211,7 @@
 
 .consultant-header .subtitle {
   opacity: 0.85;
+  color: white;
 }
 
 /* KPI CARDS */

@@ -1,3 +1,6 @@
+<!-- ============================== -->
+<!--       HOME EMPRENDEDOR        -->
+<!-- ============================== -->
 <ng-container *ngIf="role === 'ENTREPRENEUR'">
 
   <section class="home-container">
@@ -95,7 +98,10 @@
   </section>
 </ng-container>
 
-<!-- PANEL CONSULTOR -->
+
+<!-- ============================== -->
+<!--          HOME CONSULTOR        -->
+<!-- ============================== -->
 <ng-container *ngIf="role === 'CONSULTANT'">
 
   <section class="consultant-home">
@@ -168,5 +174,6 @@
       <button class="btn ghost" routerLink="/consultant/services">Servicios</button>
       <button class="btn ghost" routerLink="/consultant/metrics">Métricas</button>
     </section>
+
   </section>
 </ng-container>

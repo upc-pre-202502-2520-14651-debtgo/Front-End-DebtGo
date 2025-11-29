@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -16,14 +17,33 @@ export class AppComponent {
   role: string | null = null;
   isMenuOpen = false;
 
-  showNavbar = true;
+  // Navbar global visible únicamente donde corresponde
+  showNavbar = false;
 
   constructor(private auth: AuthService, private router: Router) {
-    router.events.subscribe(() => {
-      const hiddenRoutes = ['/login', '/register'];
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
 
-      this.showNavbar = !hiddenRoutes.includes(this.router.url);
-    });
+        const url = event.urlAfterRedirects;
+
+        // 1. OCULTAR EN LOGIN Y REGISTER
+        if (url === '/login' || url === '/register') {
+          this.showNavbar = false;
+          return;
+        }
+
+        // 2. MOSTRAR NAVBAR SOLO EN:
+        //    /home (emprendedor)
+        //    /consultant/home (consultor)
+        if (url === '/home' || url === '/consultant/home') {
+          this.showNavbar = true;
+          return;
+        }
+
+        // 3. EN CUALQUIER OTRA RUTA → OCULTAR
+        this.showNavbar = false;
+      });
   }
 
   ngOnInit() {
@@ -33,7 +53,9 @@ export class AppComponent {
     });
   }
 
-  toggleMenu() { this.isMenuOpen = !this.isMenuOpen; }
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
 
   logout() {
     this.auth.clearUser();
@@ -41,7 +63,6 @@ export class AppComponent {
     this.role = null;
     this.isMenuOpen = false;
     this.showNavbar = false;
-
     this.router.navigate(['/login']);
   }
 }

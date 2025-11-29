@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 import {
   Consultant,
   ConsultantServiceItem,
@@ -12,20 +13,18 @@ import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ConsultantService {
-  private baseUrl = `${environment.apiUrl}/api/v1`;
 
-  constructor(private http: HttpClient) {}
+  private baseUrl = `${environment.apiUrl}/api/v1`;  // http://localhost:8081/api/v1
 
+  constructor(private http: HttpClient) { }
+
+  // =============================
+  // CONSULTANTS
+  // =============================
   listarConsultores(): Observable<Consultant[]> {
     return this.http.get<Consultant[]>(`${this.baseUrl}/consultants`);
   }
 
-  // Dashboard
-  getSummary(consultantId: number): Observable<ConsultantSummary> {
-    return this.http.get<ConsultantSummary>(`${this.baseUrl}/consultants/${consultantId}/summary`);
-  }
-
-  // Perfil
   getConsultant(id: number): Observable<Consultant> {
     return this.http.get<Consultant>(`${this.baseUrl}/consultants/${id}`);
   }
@@ -34,34 +33,61 @@ export class ConsultantService {
     return this.http.put<Consultant>(`${this.baseUrl}/consultants/${id}`, dto);
   }
 
-  // Servicios
+  // Dashboard Summary
+  getSummary(consultantId: number): Observable<ConsultantSummary> {
+    return this.http.get<ConsultantSummary>(`${this.baseUrl}/consultants/${consultantId}/summary`);
+  }
+
+  // =============================
+  // SERVICES
+  // =============================
   listServices(consultantId: number): Observable<ConsultantServiceItem[]> {
-    return this.http.get<ConsultantServiceItem[]>(`${this.baseUrl}/services/by-consultant/${consultantId}`);
+    return this.http.get<ConsultantServiceItem[]>(
+      `${this.baseUrl}/services/by-consultant/${consultantId}`
+    );
   }
 
   createService(item: ConsultantServiceItem): Observable<ConsultantServiceItem> {
-    return this.http.post<ConsultantServiceItem>(`${this.baseUrl}/services`, item);
+    return this.http.post<ConsultantServiceItem>(
+      `${this.baseUrl}/services`,
+      item
+    );
   }
 
   updateService(id: number, item: ConsultantServiceItem): Observable<ConsultantServiceItem> {
-    return this.http.put<ConsultantServiceItem>(`${this.baseUrl}/services/${id}`, item);
+    return this.http.put<ConsultantServiceItem>(
+      `${this.baseUrl}/services/${id}`,
+      item
+    );
   }
 
   deleteService(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/services/${id}`);
   }
 
-  // Asesorías (casos)
+
+  // =============================
+  // CASES (ASESORÍAS)
+  // =============================
   listCases(consultantId: number): Observable<ConsultantCase[]> {
-    return this.http.get<ConsultantCase[]>(`${this.baseUrl}/requests/by-consultant/${consultantId}`);
+    return this.http.get<ConsultantCase[]>(
+      `${this.baseUrl}/requests/by-consultant/${consultantId}`
+    );
   }
 
   updateCaseStatus(id: number, status: string): Observable<void> {
-    return this.http.patch<void>(`${this.baseUrl}/requests/${id}/status`, { status });
+    return this.http.patch<void>(
+      `${this.baseUrl}/requests/${id}/status`,
+      { status }
+    );
   }
 
-  // Métricas
+  // =============================
+  // METRICS
+  // =============================
   getMetrics(consultantId: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/consultants/metrics/${consultantId}`);
+    return this.http.get<any>(
+      `${this.baseUrl}/consultants/metrics/${consultantId}`
+    );
   }
 }

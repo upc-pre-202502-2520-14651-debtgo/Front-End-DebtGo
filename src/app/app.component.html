@@ -1,4 +1,4 @@
-<!-- NAVBAR -->
+<!-- NAVBAR GLOBAL -->
 <nav class="navbar" *ngIf="showNavbar && user">
   <div class="nav-left">
     <h1 class="logo">DebtGo</h1>
@@ -11,19 +11,16 @@
       <li><a routerLink="/home">Inicio</a></li>
       <li><a routerLink="/education">Educación Financiera</a></li>
       <li><a routerLink="/debts">Mis Deudas</a></li>
-
-      <!-- CORREGIDO -->
       <li><a routerLink="/consultants">Emprendedores</a></li>
       <li><a routerLink="/payment-history">Historial</a></li>
-
       <li><a routerLink="/simulator">Simulador</a></li>
       <li><a routerLink="/reviews">Reseñas</a></li>
     </ng-container>
 
     <!-- MENU CONSULTOR -->
     <ng-container *ngIf="role === 'CONSULTANT'">
+      <li><a routerLink="/consultant/home">Inicio</a></li>
       <li><a routerLink="/consultant/dashboard">Dashboard</a></li>
-      <li><a routerLink="/consultant/profile">Perfil</a></li>
       <li><a routerLink="/consultant/services">Servicios</a></li>
       <li><a routerLink="/consultant/cases">Casos</a></li>
       <li><a routerLink="/consultant/metrics">Métricas</a></li>
@@ -32,7 +29,7 @@
   </ul>
 
   <div class="nav-user">
-    <div class="avatar">{{ user.email.charAt(0).toUpperCase() }}</div>
+    <div class="avatar">{{ user?.email?.charAt(0).toUpperCase() }}</div>
     <button class="logout-btn" (click)="logout()">Cerrar Sesión</button>
   </div>
 
@@ -46,18 +43,15 @@
     <a routerLink="/home">Inicio</a>
     <a routerLink="/education">Educación Financiera</a>
     <a routerLink="/debts">Mis Deudas</a>
-
-    <!-- CORREGIDO -->
     <a routerLink="/consultants">Emprendedores</a>
     <a routerLink="/payment-history">Historial</a>
-
     <a routerLink="/simulator">Simulador</a>
     <a routerLink="/reviews">Reseñas</a>
   </ng-container>
 
   <ng-container *ngIf="role === 'CONSULTANT'">
+    <a routerLink="/consultant/home">Inicio</a>
     <a routerLink="/consultant/dashboard">Dashboard</a>
-    <a routerLink="/consultant/profile">Perfil</a>
     <a routerLink="/consultant/services">Servicios</a>
     <a routerLink="/consultant/cases">Casos</a>
     <a routerLink="/consultant/metrics">Métricas</a>
@@ -66,4 +60,4 @@
   <button class="logout-btn-mobile" (click)="logout()">Cerrar Sesión</button>
 </div>
 
-<router-outlet></router-outlet>
+<router-outlet />

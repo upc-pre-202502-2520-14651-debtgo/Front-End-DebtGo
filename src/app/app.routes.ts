@@ -30,9 +30,9 @@ import { ConsultantComponent as ConsultantListComponent } from './modules/consul
 
 export const routes: Routes = [
 
-  // ------------------------------
-  // RUTAS PARA EMPRENDEDOR
-  // ------------------------------
+  // =====================================
+  // RUTAS EMPRENDEDOR
+  // =====================================
   { path: 'home', component: HomeComponent, canActivate: [authGuard] },
   { path: 'education', component: EducationComponent, canActivate: [authGuard] },
   { path: 'education/:id', component: EducationDetailComponent, canActivate: [authGuard] },
@@ -49,15 +49,24 @@ export const routes: Routes = [
   { path: 'simulator', component: SimulatorComponent, canActivate: [authGuard] },
   { path: 'reviews', component: ConsultantReviewComponent, canActivate: [authGuard] },
 
-  // ------------------------------
-  // RUTAS DEL CONSULTOR
-  // ------------------------------
+
+  // =====================================
+  // HOME CONSULTOR (SIN SIDEBAR)
+  // =====================================
+  {
+    path: 'consultant/home',
+    component: HomeComponent,
+    canActivate: [authGuard]
+  },
+
+  // =====================================
+  // SECCIONES CONSULTOR (CON SIDEBAR)
+  // =====================================
   {
     path: 'consultant',
     component: ConsultantLayoutComponent,
     canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: ConsultantDashboardComponent },
       { path: 'profile', component: ConsultantProfileComponent },
       { path: 'services', component: ConsultantServicesComponent },
@@ -67,15 +76,15 @@ export const routes: Routes = [
     ]
   },
 
-  // ------------------------------
+  // =====================================
   // AUTH
-  // ------------------------------
+  // =====================================
   { path: 'login', component: LoginComponent },
   { path: 'register', component: UserRegisterComponent },
 
-  // ------------------------------
+  // =====================================
   // REDIRECCIONES
-  // ------------------------------
+  // =====================================
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' }
 ];
