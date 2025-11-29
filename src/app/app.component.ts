@@ -27,22 +27,13 @@ export class AppComponent {
 
         const url = event.urlAfterRedirects;
 
-        // 1. OCULTAR EN LOGIN Y REGISTER
-        if (url === '/login' || url === '/register') {
+        // OCULTAR SOLO EN LOGIN Y REGISTER
+        if (url.startsWith('/login') || url.startsWith('/register')) {
           this.showNavbar = false;
-          return;
-        }
-
-        // 2. MOSTRAR NAVBAR SOLO EN:
-        //    /home (emprendedor)
-        //    /consultant/home (consultor)
-        if (url === '/home' || url === '/consultant/home') {
+        } else {
+          // MOSTRAR EN TODAS LAS DEMÁS RUTAS
           this.showNavbar = true;
-          return;
         }
-
-        // 3. EN CUALQUIER OTRA RUTA → OCULTAR
-        this.showNavbar = false;
       });
   }
 

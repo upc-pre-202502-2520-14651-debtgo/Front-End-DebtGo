@@ -128,3 +128,58 @@ button.disabled {
   background: #ccc;
   cursor: not-allowed;
 }
+
+.register-page {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #b38cff, #a275ff, #8c5bff);
+}
+
+.register-card {
+  width: 420px;
+  background: white;
+  border-radius: 18px;
+  padding: 40px 30px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  animation: fadeIn 0.4s ease;
+}
+
+/* Inputs */
+.register-card input,
+.register-card select {
+  width: 100%;
+  padding: 14px;
+  margin-top: 14px;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+/* Botón */
+.register-card button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 25px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  background: #6b4eff;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.register-card button:hover {
+  background: #5a3ee8;
+}
+
+/* Animación */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}

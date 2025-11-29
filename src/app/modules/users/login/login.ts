@@ -83,7 +83,6 @@ export class LoginComponent {
         // Normalizar rol
         let role = (response.user.role ?? '').toUpperCase().trim();
 
-        // Mapeo de roles del backend hacia roles del frontend
         if (role === 'BUYER') role = 'ENTREPRENEUR';
         if (role === 'ADVISOR') role = 'CONSULTANT';
 
@@ -94,9 +93,15 @@ export class LoginComponent {
           role
         };
 
+        // Guardar usuario general
         this.auth.setUser(userData);
 
-        // Navegación por rol
+        // Guardar el ID del consultor para los servicios
+        if (role === 'CONSULTANT') {
+          localStorage.setItem("consultantId", String(response.user.id));
+        }
+
+        // Navegación
         if (role === 'ENTREPRENEUR') {
           this.router.navigate(['/home']);
         }

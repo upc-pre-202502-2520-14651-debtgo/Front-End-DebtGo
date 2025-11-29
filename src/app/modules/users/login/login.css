@@ -133,3 +133,12 @@ button.disabled {
     transform: translateY(0);
   }
 }
+
+.login-page {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #b38cff, #a275ff, #8c5bff);
+}

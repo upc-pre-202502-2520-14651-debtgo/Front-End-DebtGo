@@ -1,31 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
 
 export interface Education {
   id: number;
   category: string;
   title: string;
   level: string;
-  link: string;
-  pdfLink?: string,
-  videoLink?: string
+  pdfLink?: string;
+  videoLink?: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-  export class EducationService {
-    private baseUrl = `${environment}/api/v1/education`;
+export class EducationService {
 
-    constructor(private http: HttpClient) {}
+  private api = 'http://localhost:8081/api/v1/education';
 
-    listarRecursos(): Observable<Education[]> {
-    return this.http.get<Education[]>(`${this.baseUrl}/highlights`);
+  constructor(private http: HttpClient) { }
+
+  listarRecursos(): Observable<Education[]> {
+    return this.http.get<Education[]>(`${this.api}/highlights`);
   }
 
   obtenerPorId(id: number): Observable<Education> {
-    return this.http.get<Education>(`${this.baseUrl}/${id}`);
+    return this.http.get<Education>(`${this.api}/${id}`);
   }
 }
