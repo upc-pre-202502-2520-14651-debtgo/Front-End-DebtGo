@@ -1,68 +1,67 @@
 <ng-container *ngIf="role === 'ENTREPRENEUR'">
-  <section class="home fintech">
+  <section class="home-container">
 
     <!-- Hero -->
-    <header class="hero fintech-hero">
-      <h1>Hola, {{ userName }} 👋</h1>
-      <p class="subtitle">Tu resumen financiero actualizado</p>
+    <header class="hero-card">
+      <div>
+        <h1 class="hero-title">Hola, {{ userName }} 👋</h1>
+        <p class="hero-sub">Tu resumen financiero actualizado</p>
+      </div>
 
-      <div class="balance-card">
+      <div class="hero-balance">
         <p class="label">Deuda total</p>
         <h2>S/ {{ summary?.totalPending | number }}</h2>
-        <span class="status">Actualizado hoy • 🔄</span>
+        <span class="updated">Actualizado hoy • 🔄</span>
       </div>
     </header>
 
     <!-- KPIs -->
-    <section class="kpi-row">
-
-      <article class="kpi-box">
-        <span class="kpi-icon">💳</span>
+    <section class="kpi-section">
+      <article class="kpi">
+        <span class="icon">💳</span>
         <div>
           <p class="kpi-title">Deudas activas</p>
           <h3>{{ summary?.debtsActive }}</h3>
         </div>
       </article>
 
-      <article class="kpi-box">
-        <span class="kpi-icon">📅</span>
+      <article class="kpi">
+        <span class="icon">📅</span>
         <div>
           <p class="kpi-title">Próximos pagos</p>
           <h3>{{ summary?.upcomingPayments }}</h3>
         </div>
       </article>
 
-      <article class="kpi-box">
-        <span class="kpi-icon">⚠️</span>
+      <article class="kpi">
+        <span class="icon">⚠️</span>
         <div>
           <p class="kpi-title">Alertas activas</p>
           <h3>{{ summary?.alerts }}</h3>
         </div>
       </article>
-
     </section>
 
-    <!-- Grid principal -->
-    <section class="grid">
+    <!-- Grid -->
+    <section class="grid-layout">
 
       <!-- Notificaciones -->
-      <article class="card fintech-card">
+      <article class="card">
         <header class="card-header">
           <h3>🔔 Notificaciones recientes</h3>
           <a routerLink="/payment-history">Ver todo</a>
         </header>
 
-        <ul class="notification-list">
+        <ul class="notif-list">
           <li *ngFor="let n of notifications">
             <span class="badge" [ngClass]="{
-              'warn': n.type==='ALERT',
-              'info': n.type==='INFO',
-              'pay': n.type==='PAYMENT'
-            }">
+                'warn': n.type==='ALERT',
+                'info': n.type==='INFO',
+                'pay': n.type==='PAYMENT'
+              }">
               {{ n.type }}
             </span>
-
-            <div class="text">
+            <div class="notif-text">
               <p>{{ n.message }}</p>
               <small>{{ n.date | date:'dd MMM, HH:mm' }}</small>
             </div>
@@ -74,14 +73,14 @@
         </ul>
       </article>
 
-      <!-- Educación financiera -->
-      <article class="card fintech-card">
+      <!-- Educación -->
+      <article class="card">
         <header class="card-header">
           <h3>📘 Educación financiera</h3>
           <a routerLink="/education">Explorar</a>
         </header>
 
-        <div class="edu-highlights">
+        <div class="edu-list">
           <div *ngFor="let e of highlights" class="edu-item">
             <p class="tag">{{ e.category }}</p>
             <h4>{{ e.title }}</h4>
@@ -90,44 +89,37 @@
         </div>
       </article>
     </section>
+
   </section>
 </ng-container>
 
-<ng-container *ngIf="role === 'CONSULTANT'">
 
-  <section class="home fintech consultant">
+<!-- PANEL CONSULTOR -->
+<ng-container *ngIf="role === 'CONSULTANT'">
+  <section class="home-container consultant">
 
     <header class="consultant-header">
       <h1>Panel del Consultor 👨‍💼</h1>
-      <p>Gestiona tus clientes, métricas y casos asignados</p>
+      <p>Gestiona tus clientes, métricas y casos</p>
     </header>
 
-    <!-- Métricas -->
-    <section class="consultant-kpi-row">
-
+    <section class="consultant-kpis">
       <div class="consultant-kpi">
-        <p class="label">Casos activos</p>
+        <p>Casos activos</p>
         <h2>12</h2>
       </div>
-
       <div class="consultant-kpi">
-        <p class="label">Clientes asesorados</p>
+        <p>Clientes asesorados</p>
         <h2>45</h2>
       </div>
-
       <div class="consultant-kpi">
-        <p class="label">Calificación</p>
+        <p>Calificación</p>
         <h2>4.8 ⭐</h2>
       </div>
-
     </section>
 
-    <!-- Tabla de casos -->
-    <section class="case-table card fintech-card">
-      <header>
-        <h3>Últimos casos asignados</h3>
-      </header>
-
+    <section class="card table-card">
+      <h3>Últimos casos asignados</h3>
       <table>
         <tr>
           <th>ID</th>
@@ -135,21 +127,18 @@
           <th>Estado</th>
           <th>Fecha</th>
         </tr>
-
         <tr>
           <td>#122</td>
           <td>Juan Pérez</td>
           <td><span class="chip pending">Pendiente</span></td>
           <td>28 Nov</td>
         </tr>
-
         <tr>
           <td>#118</td>
           <td>Maria Torres</td>
           <td><span class="chip finished">Finalizado</span></td>
           <td>27 Nov</td>
         </tr>
-
         <tr>
           <td>#119</td>
           <td>Carlos Medina</td>
@@ -159,11 +148,11 @@
       </table>
     </section>
 
-    <!-- Acciones -->
     <section class="quick-actions">
       <button class="btn primary" routerLink="/consultant/cases">Gestionar casos</button>
       <button class="btn ghost" routerLink="/consultant/services">Servicios</button>
       <button class="btn ghost" routerLink="/consultant/metrics">Métricas</button>
     </section>
+
   </section>
 </ng-container>

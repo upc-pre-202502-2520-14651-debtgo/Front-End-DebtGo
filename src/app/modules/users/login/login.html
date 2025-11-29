@@ -1,53 +1,59 @@
 <div class="form-container">
-  <h2>Bienvenido a DebtGo</h2>
+
+  <h2>Bienvenido a <span style="color:#6a11cb;">DebtGo</span></h2>
   <p>Inicia sesión en tu perfil</p>
 
-  <form (ngSubmit)="login()">
+  <form (ngSubmit)="login()" autocomplete="off">
+
     <!-- Email -->
-    <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required
-           (ngModelChange)="validateEmail()" />
+    <input type="email" placeholder="Correo electrónico" [(ngModel)]="email" name="email" required
+      (ngModelChange)="validateEmail()" />
+
     <p *ngIf="emailError" class="error">{{ emailError }}</p>
 
     <!-- Password -->
     <div class="password-container">
-      <input [type]="showPassword ? 'text' : 'password'" placeholder="Password" 
-             [(ngModel)]="password" name="password" required 
-             (ngModelChange)="validatePassword()" />
+      <input [type]="showPassword ? 'text' : 'password'" placeholder="Contraseña" [(ngModel)]="password" name="password"
+        required (ngModelChange)="validatePassword()" />
+
       <span class="toggle" (click)="showPassword = !showPassword">
         <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-             viewBox="0 0 16 16">
+          viewBox="0 0 16 16">
           <path
             d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8a13.133 13.133 0 0 1-1.66 2.043C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.133 13.133 0 0 1 1.173 8z" />
-          <path
-            d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z" />
+          <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z" />
         </svg>
+
         <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-             viewBox="0 0 16 16">
+          viewBox="0 0 16 16">
           <path
             d="M13.359 11.238 15.5 13.5l-1.061 1.06-2.227-2.227C11.253 13.101 9.687 14 8 14c-5 0-8-6-8-6s1.307-2.612 4.048-4.292L1.5 2.5 2.56 1.44 14.44 13.32l-1.08 1.08-2.271-2.271z" />
         </svg>
       </span>
     </div>
+
     <p *ngIf="passwordError" class="error">{{ passwordError }}</p>
 
-    <!-- Remember me -->
+    <!-- Remember Me -->
     <div class="remember">
       <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe">
       <label for="rememberMe">Recordarme</label>
     </div>
 
-    <button type="submit" 
-        [disabled]="!isFormValid()" 
-        [ngClass]="{ 'disabled': !isFormValid() }">
-  Iniciar Sesión
-</button>
+    <!-- Botón -->
+    <button type="submit" [disabled]="!isFormValid()" [ngClass]="{ disabled: !isFormValid() }">
+      Iniciar Sesión
+    </button>
 
   </form>
 
+  <!-- Registrar -->
   <p class="switch">
-    Don’t have an account? 
-    <a routerLink="/register">Registrar</a>
+    ¿No tienes una cuenta?
+    <a routerLink="/register">Registrarme</a>
   </p>
 
+  <!-- Backend errors -->
   <p *ngIf="message" class="message">{{ message }}</p>
+
 </div>

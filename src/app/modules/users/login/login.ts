@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { UserService } from '../service/user.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,67 +13,83 @@ import { UserService } from '../service/user.service';
   styleUrls: ['./login.css']
 })
 export class LoginComponent {
-  email: string = '';
-  password: string = '';
-  rememberMe: boolean = false;
-  showPassword: boolean = false;
-  message: string = '';
-  emailError: string = '';
-  passwordError: string = '';
 
+  email = '';
+  password = '';
+  rememberMe = false;
+  showPassword = false;
+  message = '';
 
-  constructor(private userService: UserService, private router: Router) { }
+  emailError: string | null = null;
+  passwordError: string | null = null;
+
+  constructor(
+    private userService: UserService,
+    private auth: AuthService,
+    private router: Router
+  ) { }
 
   validateEmail() {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    this.emailError = regex.test(this.email) ? '' : '⚠️ Ingresa un email válido';
+    if (!this.email) {
+      this.emailError = 'El correo es obligatorio';
+    } else if (!/\S+@\S+\.\S+/.test(this.email)) {
+      this.emailError = 'Correo inválido';
+    } else {
+      this.emailError = null;
+    }
   }
 
   validatePassword() {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
-    this.passwordError = regex.test(this.password)
-      ? ''
-      : '⚠️ La contraseña debe tener al menos 6 caracteres, una mayúscula, una minúscula y un número';
+    if (!this.password) {
+      this.passwordError = 'La contraseña es obligatoria';
+    } else if (this.password.length < 6) {
+      this.passwordError = 'Debe tener mínimo 6 caracteres';
+    } else {
+      this.passwordError = null;
+    }
+  }
+
+  isFormValid() {
+    return (
+      this.email !== '' &&
+      this.password !== '' &&
+      !this.emailError &&
+      !this.passwordError
+    );
   }
 
   login() {
-    this.userService.loginUser({ email: this.email, password: this.password })
-      .subscribe({
-        next: (response) => {
+    if (!this.isFormValid()) return;
 
-          if (response.success && response.user) {
+    this.userService.loginUser({
+      email: this.email,
+      password: this.password
+    }).subscribe({
+      next: (response) => {
 
-            const userData = {
-              id: response.user.id,
-              name: response.user.name,
-              email: response.user.email,
-              role: response.user.role,
-            };
+        if (response.success && response.user) {
 
-            localStorage.setItem('currentUser', JSON.stringify(userData));
+          const userData = {
+            id: response.user.id,
+            name: response.user.name,
+            email: response.user.email,
+            role: response.user.role
+          };
 
-            // Redirección por rol
-            if (response.user.role === 'ENTREPRENEUR') {
-              this.router.navigate(['/home']);
-            } else if (response.user.role === 'CONSULTANT') {
-              this.router.navigate(['/consultant-dashboard']);
-            }
+          this.auth.setUser(userData);
 
+          if (userData.role === 'ENTREPRENEUR') {
+            this.router.navigate(['/home']);
           } else {
-            this.message = '❌ ' + response.message;
+            this.router.navigate(['/consultant-dashboard']);
           }
-        },
-        error: () => {
-          this.message = '❌ Error al iniciar sesión';
+        } else {
+          this.message = '❌ ' + response.message;
         }
-      });
-  }
-
-  isFormValid(): boolean {
-    return this.email !== '' &&
-      this.password !== '' &&
-      !this.emailError &&
-      !this.passwordError &&
-      this.rememberMe;
+      },
+      error: () => {
+        this.message = '❌ Error al iniciar sesión';
+      }
+    });
   }
 }

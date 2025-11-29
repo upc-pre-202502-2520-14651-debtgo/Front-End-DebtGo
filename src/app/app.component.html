@@ -1,24 +1,70 @@
-<header class="navbar" *ngIf="initialized && isLoggedIn() && showNavbar">
-  <div class="navbar-logo">
-    <span class="logo-text">DEBT<span>GO</span></span>
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-left">
+    <h1 class="logo">DebtGo</h1>
   </div>
 
-  <nav class="req-nav">
-    <a routerLink="/home" routerLinkActive="active">INICIO</a>
-    <a routerLink="/education" routerLinkActive="active">EDUCACIÓN FINANCIERA</a>
-    <a routerLink="/debts" routerLinkActive="active">DEUDAS</a>
-    <a routerLink="/consultant/list" routerLinkActive="active">CONSULTORES</a>
-    <a routerLink="/payment-history" routerLinkActive="active">HISTORIAL DE PAGOS</a>
-    <a routerLink="/simulator" routerLinkActive="active">SIMULADOR DE PAGOS</a>
-    <a routerLink="/reviews" routerLinkActive="active">RESEÑAS</a>
-    <a routerLink="/dashboard" routerLinkActive="active">DASHBOARD</a>
-  </nav>
+  <!-- Menú Desktop -->
+  <ul class="nav-menu" *ngIf="user">
 
-  <div class="navbar-actions">
-    <button class="btn-logout" (click)="logout()">CERRAR SESIÓN</button>
+    <!-- MENÚ PARA EMPRENDEDOR -->
+    <ng-container *ngIf="role === 'ENTREPRENEUR'">>
+      <li><a routerLink="/dashboard">Dashboard</a></li>
+      <li><a routerLink="/education">Educación financiera</a></li>
+      <li><a routerLink="/debts">Mis deudas</a></li>
+      <li><a routerLink="/consultants">Emprendedores</a></li>
+      <li><a routerLink="/history">Historial</a></li>
+      <li><a routerLink="/simulator">Simulador</a></li>
+      <li><a routerLink="/reviews">Reseñas</a></li>
+    </ng-container>
+
+    <!-- MENÚ PARA CONSULTOR -->
+    <ng-container *ngIf="role === 'CONSULTANT'">
+      <li><a routerLink="/consultant/dashboard">Dashboard</a></li>
+      <li><a routerLink="/consultant/profile">Perfil</a></li>
+      <li><a routerLink="/consultant/services">Servicios</a></li>
+      <li><a routerLink="/consultant/cases">Casos</a></li>
+      <li><a routerLink="/consultant/metrics">Métricas</a></li>
+    </ng-container>
+
+  </ul>
+
+  <!-- Usuario (Avatar + Logout) -->
+  <div class="nav-user" *ngIf="user">
+    <div class="avatar">{{ user.email.charAt(0).toUpperCase() }}</div>
+    <button class="logout-btn" (click)="logout()">Cerrar Sesión</button>
   </div>
-</header>
 
-<div class="content">
-  <router-outlet></router-outlet>
+  <!-- Ícono Mobile -->
+  <button class="menu-btn" (click)="toggleMenu()" *ngIf="user">
+    ☰
+  </button>
+</nav>
+
+<!-- MENÚ MOBILE -->
+<div class="mobile-menu" *ngIf="isMenuOpen && user">
+  <ul>
+    <ng-container *ngIf="role === 'EMPRENDEDOR'">
+      <li><a routerLink="/dashboard">Dashboard</a></li>
+      <li><a routerLink="/education">Educación financiera</a></li>
+      <li><a routerLink="/debts">Mis deudas</a></li>
+      <li><a routerLink="/consultants">Emprendedores</a></li>
+      <li><a routerLink="/history">Historial</a></li>
+      <li><a routerLink="/simulator">Simulador</a></li>
+      <li><a routerLink="/reviews">Reseñas</a></li>
+    </ng-container>
+
+    <ng-container *ngIf="role === 'CONSULTOR'">
+      <li><a routerLink="/consultant/dashboard">Dashboard</a></li>
+      <li><a routerLink="/consultant/profile">Perfil</a></li>
+      <li><a routerLink="/consultant/services">Servicios</a></li>
+      <li><a routerLink="/consultant/cases">Casos</a></li>
+      <li><a routerLink="/consultant/metrics">Métricas</a></li>
+    </ng-container>
+
+    <li><button class="logout-btn-mobile" (click)="logout()">Cerrar Sesión</button></li>
+  </ul>
 </div>
+
+<!-- Router View -->
+<router-outlet></router-outlet>

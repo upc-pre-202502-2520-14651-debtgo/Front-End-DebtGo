@@ -6,8 +6,8 @@ import { ChartConfiguration, ChartOptions } from 'chart.js';
 
 @Component({
   selector: 'app-dashboard',
-  standalone: true,
   imports: [CommonModule, BaseChartDirective],
+  standalone: true,
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
@@ -89,7 +89,7 @@ export class DashboardComponent implements OnInit {
     ]
   };
 
-  constructor(private dashboardService: DashboardService) {}
+  constructor(private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
     const user = localStorage.getItem('currentUser');
