@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth.service';
 
@@ -16,7 +16,15 @@ export class AppComponent {
   role: string | null = null;
   isMenuOpen = false;
 
-  constructor(private auth: AuthService) { }
+  showNavbar = true;
+
+  constructor(private auth: AuthService, private router: Router) {
+    router.events.subscribe(() => {
+      const hiddenRoutes = ['/login', '/register'];
+
+      this.showNavbar = !hiddenRoutes.includes(this.router.url);
+    });
+  }
 
   ngOnInit() {
     this.auth.user$.subscribe(user => {
@@ -31,6 +39,9 @@ export class AppComponent {
     this.auth.clearUser();
     this.user = null;
     this.role = null;
-    window.location.href = '/login';
+    this.isMenuOpen = false;
+    this.showNavbar = false;
+
+    this.router.navigate(['/login']);
   }
 }

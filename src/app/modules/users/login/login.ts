@@ -29,6 +29,10 @@ export class LoginComponent {
     private router: Router
   ) { }
 
+  // -----------------------
+  // VALIDACIONES
+  // -----------------------
+
   validateEmail() {
     if (!this.email) {
       this.emailError = 'El correo es obligatorio';
@@ -58,6 +62,10 @@ export class LoginComponent {
     );
   }
 
+  // -----------------------
+  // LOGIN
+  // -----------------------
+
   login() {
     if (!this.isFormValid()) return;
 
@@ -67,25 +75,39 @@ export class LoginComponent {
     }).subscribe({
       next: (response) => {
 
-        if (response.success && response.user) {
-
-          const userData = {
-            id: response.user.id,
-            name: response.user.name,
-            email: response.user.email,
-            role: response.user.role
-          };
-
-          this.auth.setUser(userData);
-
-          if (userData.role === 'ENTREPRENEUR') {
-            this.router.navigate(['/home']);
-          } else {
-            this.router.navigate(['/consultant-dashboard']);
-          }
-        } else {
+        if (!response.success || !response.user) {
           this.message = '❌ ' + response.message;
+          return;
         }
+
+        // Normalizar rol
+        let role = (response.user.role ?? '').toUpperCase().trim();
+
+        // Mapeo de roles del backend hacia roles del frontend
+        if (role === 'BUYER') role = 'ENTREPRENEUR';
+        if (role === 'ADVISOR') role = 'CONSULTANT';
+
+        const userData = {
+          id: response.user.id,
+          name: response.user.name,
+          email: response.user.email,
+          role
+        };
+
+        this.auth.setUser(userData);
+
+        // Navegación por rol
+        if (role === 'ENTREPRENEUR') {
+          this.router.navigate(['/home']);
+        }
+        else if (role === 'CONSULTANT') {
+          this.router.navigate(['/consultant/dashboard']);
+        }
+        else {
+          this.message = '❌ Rol no permitido: ' + role;
+          this.auth.clearUser();
+        }
+
       },
       error: () => {
         this.message = '❌ Error al iniciar sesión';

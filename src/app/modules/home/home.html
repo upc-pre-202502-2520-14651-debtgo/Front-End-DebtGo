@@ -1,8 +1,9 @@
 <ng-container *ngIf="role === 'ENTREPRENEUR'">
+
   <section class="home-container">
 
-    <!-- Hero -->
-    <header class="hero-card">
+    <!-- HERO PRINCIPAL -->
+    <header class="hero-card animate-fade-in">
       <div>
         <h1 class="hero-title">Hola, {{ userName }} 👋</h1>
         <p class="hero-sub">Tu resumen financiero actualizado</p>
@@ -16,9 +17,9 @@
     </header>
 
     <!-- KPIs -->
-    <section class="kpi-section">
+    <section class="kpi-section animate-slide-up">
       <article class="kpi">
-        <span class="icon">💳</span>
+        <span class="icon kpi-1">💳</span>
         <div>
           <p class="kpi-title">Deudas activas</p>
           <h3>{{ summary?.debtsActive }}</h3>
@@ -26,7 +27,7 @@
       </article>
 
       <article class="kpi">
-        <span class="icon">📅</span>
+        <span class="icon kpi-2">📅</span>
         <div>
           <p class="kpi-title">Próximos pagos</p>
           <h3>{{ summary?.upcomingPayments }}</h3>
@@ -34,7 +35,7 @@
       </article>
 
       <article class="kpi">
-        <span class="icon">⚠️</span>
+        <span class="icon kpi-3">⚠️</span>
         <div>
           <p class="kpi-title">Alertas activas</p>
           <h3>{{ summary?.alerts }}</h3>
@@ -42,11 +43,11 @@
       </article>
     </section>
 
-    <!-- Grid -->
+    <!-- GRID PRINCIPAL -->
     <section class="grid-layout">
 
-      <!-- Notificaciones -->
-      <article class="card">
+      <!-- Notificaciones recientes -->
+      <article class="card animate-fade-in">
         <header class="card-header">
           <h3>🔔 Notificaciones recientes</h3>
           <a routerLink="/payment-history">Ver todo</a>
@@ -61,6 +62,7 @@
               }">
               {{ n.type }}
             </span>
+
             <div class="notif-text">
               <p>{{ n.message }}</p>
               <small>{{ n.date | date:'dd MMM, HH:mm' }}</small>
@@ -73,86 +75,98 @@
         </ul>
       </article>
 
-      <!-- Educación -->
-      <article class="card">
+      <!-- Educación financiera -->
+      <article class="card animate-fade-in">
         <header class="card-header">
-          <h3>📘 Educación financiera</h3>
+          <h3>📘 Educación Financiera</h3>
           <a routerLink="/education">Explorar</a>
         </header>
 
         <div class="edu-list">
-          <div *ngFor="let e of highlights" class="edu-item">
+          <div class="edu-item" *ngFor="let e of highlights">
             <p class="tag">{{ e.category }}</p>
             <h4>{{ e.title }}</h4>
             <small>{{ e.level }}</small>
           </div>
         </div>
       </article>
-    </section>
 
+    </section>
   </section>
 </ng-container>
 
-
 <!-- PANEL CONSULTOR -->
 <ng-container *ngIf="role === 'CONSULTANT'">
-  <section class="home-container consultant">
 
-    <header class="consultant-header">
-      <h1>Panel del Consultor 👨‍💼</h1>
-      <p>Gestiona tus clientes, métricas y casos</p>
+  <section class="consultant-home">
+
+    <!-- HEADER -->
+    <header class="consultant-header animate-fade-in">
+      <h1 class="title">Panel del Consultor 👨‍💼</h1>
+      <p class="subtitle">Gestiona tus clientes, métricas y casos activos</p>
     </header>
 
-    <section class="consultant-kpis">
-      <div class="consultant-kpi">
+    <!-- KPI CARDS -->
+    <section class="consultant-kpis animate-slide-up">
+      <div class="consultant-kpi kpi-1">
         <p>Casos activos</p>
-        <h2>12</h2>
+        <h2>{{ consultantStats?.activeCases ?? 12 }}</h2>
       </div>
-      <div class="consultant-kpi">
+
+      <div class="consultant-kpi kpi-2">
         <p>Clientes asesorados</p>
-        <h2>45</h2>
+        <h2>{{ consultantStats?.clients ?? 45 }}</h2>
       </div>
-      <div class="consultant-kpi">
-        <p>Calificación</p>
-        <h2>4.8 ⭐</h2>
+
+      <div class="consultant-kpi kpi-3">
+        <p>Calificación general</p>
+        <h2>{{ consultantStats?.rating ?? '4.8 ⭐' }}</h2>
       </div>
     </section>
 
-    <section class="card table-card">
-      <h3>Últimos casos asignados</h3>
-      <table>
-        <tr>
-          <th>ID</th>
-          <th>Cliente</th>
-          <th>Estado</th>
-          <th>Fecha</th>
-        </tr>
-        <tr>
-          <td>#122</td>
-          <td>Juan Pérez</td>
-          <td><span class="chip pending">Pendiente</span></td>
-          <td>28 Nov</td>
-        </tr>
-        <tr>
-          <td>#118</td>
-          <td>Maria Torres</td>
-          <td><span class="chip finished">Finalizado</span></td>
-          <td>27 Nov</td>
-        </tr>
-        <tr>
-          <td>#119</td>
-          <td>Carlos Medina</td>
-          <td><span class="chip progress">En progreso</span></td>
-          <td>27 Nov</td>
-        </tr>
+    <!-- TABLA DE CASOS -->
+    <section class="card table-card animate-fade-in">
+      <h3 class="table-title">Últimos casos asignados</h3>
+
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#122</td>
+            <td>Juan Pérez</td>
+            <td><span class="chip pending">Pendiente</span></td>
+            <td>28 Nov</td>
+          </tr>
+
+          <tr>
+            <td>#118</td>
+            <td>Maria Torres</td>
+            <td><span class="chip finished">Finalizado</span></td>
+            <td>27 Nov</td>
+          </tr>
+
+          <tr>
+            <td>#119</td>
+            <td>Carlos Medina</td>
+            <td><span class="chip progress">En progreso</span></td>
+            <td>27 Nov</td>
+          </tr>
+        </tbody>
       </table>
     </section>
 
-    <section class="quick-actions">
+    <!-- ACCIONES RÁPIDAS -->
+    <section class="quick-actions animate-slide-up">
       <button class="btn primary" routerLink="/consultant/cases">Gestionar casos</button>
       <button class="btn ghost" routerLink="/consultant/services">Servicios</button>
       <button class="btn ghost" routerLink="/consultant/metrics">Métricas</button>
     </section>
-
   </section>
 </ng-container>

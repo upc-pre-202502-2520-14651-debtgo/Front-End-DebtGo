@@ -21,6 +21,13 @@ export class HomeComponent implements OnInit {
   private homeSrv = inject(HomeService);
   private router = inject(Router);
 
+  consultantStats = {
+    activeCases: 12,
+    clients: 45,
+    rating: '4.8 ⭐'
+  };
+
+
   // Estado UI
   loading = true;
   errorMsg = '';
@@ -84,7 +91,6 @@ export class HomeComponent implements OnInit {
   trackById = (_: number, item: { id: number }) => item.id;
   trackByIndex = (_: number, __: unknown) => _;
 
-  // Navegación rápida (si prefieres usar (click) en lugar de routerLink)
   go(path: string) {
     this.router.navigate([path]);
   }
