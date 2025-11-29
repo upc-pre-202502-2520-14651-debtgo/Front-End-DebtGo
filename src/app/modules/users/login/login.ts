@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';   
-import { UserService } from '../service/user.service';  
+import { Router, RouterModule } from '@angular/router';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule], 
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
@@ -21,7 +21,7 @@ export class LoginComponent {
   passwordError: string = '';
 
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router) { }
 
   validateEmail() {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -35,30 +35,44 @@ export class LoginComponent {
       : '⚠️ La contraseña debe tener al menos 6 caracteres, una mayúscula, una minúscula y un número';
   }
 
-      login() {
-  this.userService.loginUser({ email: this.email, password: this.password })
-    .subscribe(response => {
-      if (response.success && response.user) {
-        localStorage.setItem('currentUser', JSON.stringify(response.user));
+  login() {
+    this.userService.loginUser({ email: this.email, password: this.password })
+      .subscribe({
+        next: (response) => {
 
-        if (response.user.role === 'ENTREPRENEUR') {
-          this.router.navigate(['/payment-method']);
-        } else if (response.user.role === 'CONSULTANT') {
-          this.router.navigate(['/payment-plan']);
+          if (response.success && response.user) {
+
+            const userData = {
+              id: response.user.id,
+              name: response.user.name,
+              email: response.user.email,
+              role: response.user.role,
+            };
+
+            localStorage.setItem('currentUser', JSON.stringify(userData));
+
+            // Redirección por rol
+            if (response.user.role === 'ENTREPRENEUR') {
+              this.router.navigate(['/home']);
+            } else if (response.user.role === 'CONSULTANT') {
+              this.router.navigate(['/consultant-dashboard']);
+            }
+
+          } else {
+            this.message = '❌ ' + response.message;
+          }
+        },
+        error: () => {
+          this.message = '❌ Error al iniciar sesión';
         }
-      } else {
-        this.message = '❌ ' + response.message;
-      }
-    }, error => {
-      this.message = '❌ Error al iniciar sesión';
-    });
-}
+      });
+  }
 
-    isFormValid(): boolean {
+  isFormValid(): boolean {
     return this.email !== '' &&
-          this.password !== '' &&
-          !this.emailError &&
-          !this.passwordError &&
-          this.rememberMe;
+      this.password !== '' &&
+      !this.emailError &&
+      !this.passwordError &&
+      this.rememberMe;
   }
 }

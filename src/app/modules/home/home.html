@@ -1,127 +1,169 @@
-<section class="home">
+<ng-container *ngIf="role === 'ENTREPRENEUR'">
+  <section class="home fintech">
 
-  <!-- Hero compacto -->
-  <header class="hero">
-    <div class="hero-text">
-      <h1>Bienvenido a <span>DebtGo</span> 👋</h1>
-      <p>
-        Tu asistente financiero digital: organiza tus deudas, gestiona pagos,
-        conecta con consultores y mejora tu educación financiera.
-      </p>
-      <div class="hero-actions">
-        <button class="btn primary" routerLink="/payment-history">🚀 Ver pagos</button>
-        <button class="btn ghost" routerLink="/cases">➕ Añadir deuda</button>
+    <!-- Hero -->
+    <header class="hero fintech-hero">
+      <h1>Hola, {{ userName }} 👋</h1>
+      <p class="subtitle">Tu resumen financiero actualizado</p>
+
+      <div class="balance-card">
+        <p class="label">Deuda total</p>
+        <h2>S/ {{ summary?.totalPending | number }}</h2>
+        <span class="status">Actualizado hoy • 🔄</span>
       </div>
-    </div>
-  </header>
-
-  <!-- Estado de carga / error -->
-  <div *ngIf="loading" class="state info">⏳ Cargando tu panel...</div>
-  <div *ngIf="!loading && errorMsg" class="state error">{{ errorMsg }}</div>
-
-  <!-- Panel principal -->
-  <ng-container *ngIf="!loading && !errorMsg">
+    </header>
 
     <!-- KPIs -->
-    <section class="summary-grid">
-      <article class="card kpi debt">
-        <span class="icon">💳</span>
-        <h3>Deudas activas</h3>
-        <p class="number">{{ summary?.debtsActive || 0 }}</p>
-        <p class="sub">Total pendiente: <b>S/ {{ summary?.totalPending || 0 | number }}</b></p>
+    <section class="kpi-row">
+
+      <article class="kpi-box">
+        <span class="kpi-icon">💳</span>
+        <div>
+          <p class="kpi-title">Deudas activas</p>
+          <h3>{{ summary?.debtsActive }}</h3>
+        </div>
       </article>
 
-      <article class="card kpi payments">
-        <span class="icon">📅</span>
-        <h3>Próximos pagos</h3>
-        <p class="number">{{ summary?.upcomingPayments || 0 }}</p>
-        <p class="sub">Esta semana / mes</p>
+      <article class="kpi-box">
+        <span class="kpi-icon">📅</span>
+        <div>
+          <p class="kpi-title">Próximos pagos</p>
+          <h3>{{ summary?.upcomingPayments }}</h3>
+        </div>
       </article>
 
-      <article class="card kpi alerts">
-        <span class="icon">⚠️</span>
-        <h3>Alertas</h3>
-        <p class="number">{{ summary?.alerts || 0 }}</p>
-        <p class="sub">Vencimientos y avisos</p>
+      <article class="kpi-box">
+        <span class="kpi-icon">⚠️</span>
+        <div>
+          <p class="kpi-title">Alertas activas</p>
+          <h3>{{ summary?.alerts }}</h3>
+        </div>
       </article>
 
-      <article class="card kpi cta">
-        <h3>Accesos rápidos</h3>
-        <div class="quick-links">
-          <a routerLink="/cases" class="quick-item">➕ <span>Nueva deuda</span></a>
-          <a routerLink="/consultants" class="quick-item">👨‍💼 <span>Consultores</span></a>
-          <a routerLink="/education" class="quick-item">📘 <span>Educación</span></a>
+    </section>
+
+    <!-- Grid principal -->
+    <section class="grid">
+
+      <!-- Notificaciones -->
+      <article class="card fintech-card">
+        <header class="card-header">
+          <h3>🔔 Notificaciones recientes</h3>
+          <a routerLink="/payment-history">Ver todo</a>
+        </header>
+
+        <ul class="notification-list">
+          <li *ngFor="let n of notifications">
+            <span class="badge" [ngClass]="{
+              'warn': n.type==='ALERT',
+              'info': n.type==='INFO',
+              'pay': n.type==='PAYMENT'
+            }">
+              {{ n.type }}
+            </span>
+
+            <div class="text">
+              <p>{{ n.message }}</p>
+              <small>{{ n.date | date:'dd MMM, HH:mm' }}</small>
+            </div>
+          </li>
+
+          <li *ngIf="!notifications.length" class="empty">
+            🎉 Todo está en orden
+          </li>
+        </ul>
+      </article>
+
+      <!-- Educación financiera -->
+      <article class="card fintech-card">
+        <header class="card-header">
+          <h3>📘 Educación financiera</h3>
+          <a routerLink="/education">Explorar</a>
+        </header>
+
+        <div class="edu-highlights">
+          <div *ngFor="let e of highlights" class="edu-item">
+            <p class="tag">{{ e.category }}</p>
+            <h4>{{ e.title }}</h4>
+            <small>{{ e.level }}</small>
+          </div>
         </div>
       </article>
     </section>
+  </section>
+</ng-container>
 
-    <!-- Grid de contenido -->
-    <section class="main-grid">
-      <div class="col">
-        <!-- Notificaciones -->
-        <article class="card">
-          <header>
-            <h3>🔔 Notificaciones</h3>
-            <a routerLink="/payment-history">Ver todo</a>
-          </header>
-          <ul class="list">
-            <li *ngFor="let n of notifications; trackBy: trackById" class="list-item">
-              <span class="badge"
-                [ngClass]="{'warn': n.type==='ALERT', 'info': n.type==='INFO', 'pay': n.type==='PAYMENT'}">
-                {{ n.type }}
-              </span>
-              <div>
-                <p>{{ n.message }}</p>
-                <small>{{ n.date | date:'dd/MM/yyyy, HH:mm' }}</small>
-              </div>
-            </li>
-            <li *ngIf="!notifications?.length" class="empty">🎉 No tienes notificaciones</li>
-          </ul>
-        </article>
+<ng-container *ngIf="role === 'CONSULTANT'">
 
-        <!-- Movimientos -->
-        <article class="card">
-          <header>
-            <h3>📑 Últimos movimientos</h3>
-            <a routerLink="/payment-history">Historial</a>
-          </header>
-          <div *ngFor="let m of movements; trackBy: trackByIndex" class="movement">
-            <div>{{ m.date | date:'dd/MM/yyyy' }}</div>
-            <div>{{ m.concept }}</div>
-            <div [class.neg]="m.amount < 0">
-              {{ m.amount | currency:'PEN':'symbol':'1.0-2' }}
-            </div>
-            <span class="chip" [ngClass]="m.status.toLowerCase()">
-              {{ m.status }}
-            </span>
-          </div>
-          <div *ngIf="!movements?.length" class="empty">Aún no hay movimientos.</div>
-        </article>
+  <section class="home fintech consultant">
+
+    <header class="consultant-header">
+      <h1>Panel del Consultor 👨‍💼</h1>
+      <p>Gestiona tus clientes, métricas y casos asignados</p>
+    </header>
+
+    <!-- Métricas -->
+    <section class="consultant-kpi-row">
+
+      <div class="consultant-kpi">
+        <p class="label">Casos activos</p>
+        <h2>12</h2>
       </div>
 
-      <!-- Educación financiera + Consejo del día -->
-      <div class="col">
-        <article class="card">
-          <header>
-            <h3>📘 Educación financiera</h3>
-            <a routerLink="/education">Ver más</a>
-          </header>
-          <div class="edu-grid">
-            <a *ngFor="let e of highlights; trackBy: trackById"
-               class="edu-item" [href]="e.link" target="_blank">
-              <span class="tag">{{ e.category }}</span>
-              <h4>{{ e.title }}</h4>
-              <small>{{ e.level }}</small>
-            </a>
-          </div>
-        </article>
-
-        <!-- Consejo del día -->
-        <article class="card tip-card">
-          <h3>💡 Consejo del día</h3>
-          <p>“Ahorra al menos el 10% de tus ingresos cada mes para construir tu fondo de emergencia.”</p>
-        </article>
+      <div class="consultant-kpi">
+        <p class="label">Clientes asesorados</p>
+        <h2>45</h2>
       </div>
+
+      <div class="consultant-kpi">
+        <p class="label">Calificación</p>
+        <h2>4.8 ⭐</h2>
+      </div>
+
     </section>
-  </ng-container>
-</section>
+
+    <!-- Tabla de casos -->
+    <section class="case-table card fintech-card">
+      <header>
+        <h3>Últimos casos asignados</h3>
+      </header>
+
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+        </tr>
+
+        <tr>
+          <td>#122</td>
+          <td>Juan Pérez</td>
+          <td><span class="chip pending">Pendiente</span></td>
+          <td>28 Nov</td>
+        </tr>
+
+        <tr>
+          <td>#118</td>
+          <td>Maria Torres</td>
+          <td><span class="chip finished">Finalizado</span></td>
+          <td>27 Nov</td>
+        </tr>
+
+        <tr>
+          <td>#119</td>
+          <td>Carlos Medina</td>
+          <td><span class="chip progress">En progreso</span></td>
+          <td>27 Nov</td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- Acciones -->
+    <section class="quick-actions">
+      <button class="btn primary" routerLink="/consultant/cases">Gestionar casos</button>
+      <button class="btn ghost" routerLink="/consultant/services">Servicios</button>
+      <button class="btn ghost" routerLink="/consultant/metrics">Métricas</button>
+    </section>
+  </section>
+</ng-container>

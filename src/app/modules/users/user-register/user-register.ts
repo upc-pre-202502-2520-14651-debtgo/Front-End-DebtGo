@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';  
-import { UserService } from '../service/user.service';  
+import { Router, RouterModule } from '@angular/router';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-user-register',
@@ -23,7 +23,7 @@ export class UserRegisterComponent {
   passwordError: string = '';
   confirmPasswordError: string = '';
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router) { }
 
   // Validaciones
   validateEmail() {
@@ -54,32 +54,39 @@ export class UserRegisterComponent {
     );
   }
 
-    // Registro + redirección por rol
-    register() {
+  // Registro + redirección por rol
+  register() {
     if (!this.isFormValid()) {
       this.message = '⚠️ Completa correctamente todos los campos antes de continuar';
       return;
     }
 
-    this.userService.registerUser({
-      id: 0,
+    const request = {
+      name: this.email.split('@')[0],
       email: this.email,
       password: this.password,
       role: this.role
-    }).subscribe(response => {
-      if (response.success && response.user) {
-        localStorage.setItem('currentUser', JSON.stringify(response.user));
+    };
 
-        if (response.user.role === 'ENTREPRENEUR') {
-          this.router.navigate(['/payment-method']);
-        } else if (response.user.role === 'CONSULTANT') {
-          this.router.navigate(['/payment-plan']);
+    this.userService.registerUser(request).subscribe({
+      next: (response) => {
+        if (response.success && response.user) {
+
+          localStorage.setItem('currentUser', JSON.stringify(response.user));
+
+          // Redirección por rol
+          if (response.user.role === 'ENTREPRENEUR') {
+            this.router.navigate(['/payment-method']);
+          } else if (response.user.role === 'CONSULTANT') {
+            this.router.navigate(['/payment-plan']);
+          }
+        } else {
+          this.message = '❌ ' + response.message;
         }
-      } else {
-        this.message = '❌ ' + response.message;
+      },
+      error: () => {
+        this.message = '❌ Error al registrar usuario';
       }
-    }, error => {
-      this.message = '❌ Error al registrar usuario';
     });
   }
 }

@@ -32,13 +32,16 @@ export class HomeComponent implements OnInit {
   movements: HomeMovement[] = [];
   highlights: EducationHighlight[] = [];
 
+  role: string | null = null;
+
   ngOnInit(): void {
-    // Nombre desde el currentUser si existe
     try {
       const raw = localStorage.getItem('currentUser');
       if (raw) {
         const u = JSON.parse(raw);
+
         if (u?.name) this.userName = u.name;
+        if (u?.role) this.role = u.role;
       }
     } catch (e) {
       console.warn('Error leyendo currentUser de localStorage', e);
