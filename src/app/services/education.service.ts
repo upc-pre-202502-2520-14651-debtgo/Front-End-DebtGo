@@ -29,6 +29,14 @@ export class EducationService {
     return this.http.get<Education>(`${this.api}/${id}`);
   }
 
+  getVideos() {
+    return this.http.get(`${this.api}/videos`);
+  }
+
+  getResources() {
+    return this.http.get(`${this.api}/resources`);
+  }
+
   getHighlights() {
     return this.http.get(`${this.api}/highlights`);
   }
