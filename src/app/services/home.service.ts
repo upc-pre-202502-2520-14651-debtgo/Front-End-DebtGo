@@ -15,8 +15,8 @@ export interface HomeNotification {
   id: number;
   type: 'PAYMENT' | 'ALERT' | 'INFO';
   message: string;
-  date: string;  
-  read?: boolean;   
+  date: string;
+  read?: boolean;
 }
 
 export interface HomeMovement {
@@ -37,9 +37,10 @@ export interface EducationHighlight {
 /** ====== SERVICIO ====== */
 @Injectable({ providedIn: 'root' })
 export class HomeService {
-  private base = `${environment.apiUrl}/api/home`;
 
-  constructor(private http: HttpClient) {}
+  private base = `${environment.apiUrl}/home`;
+
+  constructor(private http: HttpClient) { }
 
   getSummary(): Observable<HomeSummary> {
     return this.http.get<HomeSummary>(`${this.base}/summary`);
