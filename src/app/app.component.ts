@@ -1,59 +1,90 @@
-import { Component } from '@angular/core';
-import { Router, RouterModule, NavigationEnd } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
-import { filter } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  imports: [CommonModule, RouterModule, RouterOutlet]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   user: any = null;
   role: string | null = null;
-  isMenuOpen = false;
-
-  // Navbar global visible únicamente donde corresponde
   showNavbar = false;
 
-  constructor(private auth: AuthService, private router: Router) {
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
+  isMenuOpen: boolean = false;
 
-        const url = event.urlAfterRedirects;
+  constructor(
+    private auth: AuthService,
+    private router: Router
+  ) {
 
-        // OCULTAR SOLO EN LOGIN Y REGISTER
-        if (url.startsWith('/login') || url.startsWith('/register')) {
-          this.showNavbar = false;
-        } else {
-          // MOSTRAR EN TODAS LAS DEMÁS RUTAS
-          this.showNavbar = true;
-        }
-      });
-  }
-
-  ngOnInit() {
-    this.auth.user$.subscribe(user => {
-      this.user = user;
-      this.role = user?.role ?? null;
+    // Detecta cambio de ruta
+    this.router.events.subscribe(() => {
+      this.updateNavbarVisibility();
     });
   }
 
-  toggleMenu() {
+  ngOnInit(): void {
+    try {
+      const raw = localStorage.getItem('currentUser');
+
+      if (raw) {
+        const u = JSON.parse(raw);
+
+        // Mantener el OBJETO this.user
+        this.user = u;
+
+        this.role = u.role ?? null;
+      }
+
+    } catch (e) {
+      console.warn('Error leyendo currentUser de localStorage', e);
+    }
+  }
+
+  updateNavbarVisibility() {
+    const path = this.router.url;
+
+    const hiddenRoutes = [
+      '/login',
+      '/register',
+      '/payment-plan',
+      '/payment-method'
+    ];
+
+    // Ocultar en rutas públicas
+    if (hiddenRoutes.some(r => path.includes(r))) {
+      this.showNavbar = false;
+      return;
+    }
+
+    // Ocultar toda la zona /consultant exceptuando /consultant/home
+    if (path.startsWith('/consultant/') && !path.includes('/consultant/home')) {
+      this.showNavbar = false;
+      return;
+    }
+
+
+    // Mostrar navbar solo si hay usuario
+    this.showNavbar = !!this.user;
+  }
+
+  toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
-  logout() {
-    this.auth.clearUser();
-    this.user = null;
-    this.role = null;
+  closeMenu(): void {
     this.isMenuOpen = false;
-    this.showNavbar = false;
+  }
+
+  logout(): void {
+    this.auth.clearUser();
+    this.closeMenu();
     this.router.navigate(['/login']);
   }
 }

@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
   errorMsg = '';
 
   // Datos
-  userName = 'Usuario';
+  user: string = '';
   summary!: HomeSummary;
   notifications: HomeNotification[] = [];
   movements: HomeMovement[] = [];
@@ -47,8 +47,8 @@ export class HomeComponent implements OnInit {
       if (raw) {
         const u = JSON.parse(raw);
 
-        if (u?.name) this.userName = u.name;
-        if (u?.role) this.role = u.role;
+        this.user = u.name;   // SOLO EL NOMBRE
+        this.role = u.role;
       }
     } catch (e) {
       console.warn('Error leyendo currentUser de localStorage', e);

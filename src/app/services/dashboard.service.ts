@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -30,11 +30,21 @@ export interface ConsultantDashboard {
 })
 export class DashboardService {
 
-  private apiUrl = `${environment.apiUrl}/api/consultants/dashboard`;
+  private apiUrl = `${environment.apiUrl}/api/v1/consultants`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
+
+  private headers() {
+    const token = localStorage.getItem('token') ?? '';
+    return {
+      headers: new HttpHeaders({ Authorization: `Bearer ${token}` })
+    };
+  }
 
   getDashboard(consultantId: number): Observable<ConsultantDashboard> {
-    return this.http.get<ConsultantDashboard>(`${this.apiUrl}/${consultantId}`);
+    return this.http.get<ConsultantDashboard>(
+      `${this.apiUrl}/dashboard/${consultantId}`,
+      this.headers()
+    );
   }
 }

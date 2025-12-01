@@ -162,3 +162,8 @@ router-outlet ~ * {
     transform: scale(1);
   }
 }
+
+.navbar {
+    position: relative;
+    z-index: 1000; /* MUY POR ENCIMA DE TODO */
+}

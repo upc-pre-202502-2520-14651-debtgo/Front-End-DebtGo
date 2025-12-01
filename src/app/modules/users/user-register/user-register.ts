@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { UserService } from '../service/user.service';
+import { RegisterResponse } from '../user-models/user.model';
 
 @Component({
   selector: 'app-user-register',
@@ -25,7 +26,6 @@ export class UserRegisterComponent {
 
   constructor(private userService: UserService, private router: Router) { }
 
-  // Validaciones
   validateEmail() {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     this.emailError = regex.test(this.email) ? '' : '⚠️ Ingresa un email válido';
@@ -54,7 +54,6 @@ export class UserRegisterComponent {
     );
   }
 
-  // Registro + redirección por rol
   register() {
     if (!this.isFormValid()) {
       this.message = '⚠️ Completa correctamente todos los campos antes de continuar';
@@ -70,18 +69,24 @@ export class UserRegisterComponent {
 
     this.userService.registerUser(request).subscribe({
       next: (response) => {
-        if (response.success && response.user) {
 
-          localStorage.setItem('currentUser', JSON.stringify(response.user));
+        const name = this.email.split('@')[0];
 
-          // Redirección por rol
-          if (response.user.role === 'ENTREPRENEUR') {
-            this.router.navigate(['/payment-method']);
-          } else if (response.user.role === 'CONSULTANT') {
-            this.router.navigate(['/payment-plan']);
-          }
-        } else {
-          this.message = '❌ ' + response.message;
+        const userData = {
+          id: response.id,
+          name: name,
+          email: response.email,
+          role: response.role
+        };
+
+        // Guardar usuario
+        localStorage.setItem('currentUser', JSON.stringify(userData));
+
+
+        if (response.role === 'ENTREPRENEUR') {
+          this.router.navigate(['/home']);
+        } else if (response.role === 'CONSULTANT') {
+          this.router.navigate(['/payment-plan']);
         }
       },
       error: () => {

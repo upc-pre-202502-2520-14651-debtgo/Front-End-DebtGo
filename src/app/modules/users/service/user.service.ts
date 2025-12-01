@@ -1,34 +1,28 @@
+// src/app/modules/users/service/user.service.ts
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
-import { User, RegisterRequest } from '../user.model';
-
-export interface LoginResponse {
-  success: boolean;
-  message: string;
-  user: User | null;
-}
-
-export interface RegisterResponse {
-  success: boolean;
-  message: string;
-  user: User | null;
-}
+import {
+  User,
+  RegisterRequest,
+  RegisterResponse,
+  LoginResponse
+} from '../user-models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = `${environment.apiUrl}/api/users`; // Backend
+
+  private apiUrl = `${environment.apiUrl}/api/users`;
 
   constructor(private http: HttpClient) { }
 
-  registerUser(user: RegisterRequest) {
-    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, user, {
-      headers: { 'Content-Type': 'application/json' }
-    });
+  registerUser(request: RegisterRequest) {
+    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, request);
   }
 
   loginUser(credentials: { email: string; password: string }): Observable<LoginResponse> {
@@ -39,8 +33,9 @@ export class UserService {
     return this.http.get<User[]>(this.apiUrl);
   }
 
-  // --- Logout ---
   logout(): void {
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('token');
+    localStorage.removeItem('consultantId');
   }
 }

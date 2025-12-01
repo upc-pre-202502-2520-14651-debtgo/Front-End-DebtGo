@@ -14,10 +14,14 @@
 
 /* Fondo general */
 .home-container {
-  padding: 40px 8%;
-  min-height: calc(100vh - 70px);
-  background: linear-gradient(135deg, #a88cff, #7a64ff);
-  color: #333;
+  margin-top: 90px; /* Ajusta según la altura del navbar */
+  position: relative;
+  z-index: 1;
+}
+
+.navbar {
+  z-index: 10 !important;
+  position: relative;
 }
 
 /* Animaciones */

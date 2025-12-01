@@ -1,4 +1,6 @@
-<!-- NAVBAR GLOBAL -->
+<!-- ============================== -->
+<!--         NAVBAR GLOBAL          -->
+<!-- ============================== -->
 <nav class="navbar" *ngIf="showNavbar && user">
   <div class="nav-left">
     <h1 class="logo">DebtGo</h1>
@@ -8,22 +10,22 @@
 
     <!-- MENU EMPRENDEDOR -->
     <ng-container *ngIf="role === 'ENTREPRENEUR'">
-      <li><a routerLink="/home">Inicio</a></li>
-      <li><a routerLink="/education">Educación Financiera</a></li>
-      <li><a routerLink="/debts">Mis Deudas</a></li>
-      <li><a routerLink="/consultants">Emprendedores</a></li>
-      <li><a routerLink="/payment-history">Historial</a></li>
-      <li><a routerLink="/simulator">Simulador</a></li>
-      <li><a routerLink="/reviews">Reseñas</a></li>
+      <li><a routerLink="/home" routerLinkActive="active">Inicio</a></li>
+      <li><a routerLink="/education" routerLinkActive="active">Educación Financiera</a></li>
+      <li><a routerLink="/debts" routerLinkActive="active">Mis Deudas</a></li>
+      <li><a routerLink="/consultants" routerLinkActive="active">Emprendedores</a></li>
+      <li><a routerLink="/payment-history" routerLinkActive="active">Historial</a></li>
+      <li><a routerLink="/simulator" routerLinkActive="active">Simulador</a></li>
+      <li><a routerLink="/reviews" routerLinkActive="active">Reseñas</a></li>
     </ng-container>
 
     <!-- MENU CONSULTOR -->
     <ng-container *ngIf="role === 'CONSULTANT'">
-      <li><a routerLink="/consultant/home">Inicio</a></li>
-      <li><a routerLink="/consultant/dashboard">Dashboard</a></li>
-      <li><a routerLink="/consultant/services">Servicios</a></li>
-      <li><a routerLink="/consultant/cases">Casos</a></li>
-      <li><a routerLink="/consultant/metrics">Métricas</a></li>
+      <li><a routerLink="/consultant/home" routerLinkActive="active">Inicio</a></li>
+      <li><a routerLink="/consultant/dashboard" routerLinkActive="active">Dashboard</a></li>
+      <li><a routerLink="/consultant/services" routerLinkActive="active">Servicios</a></li>
+      <li><a routerLink="/consultant/cases" routerLinkActive="active">Casos</a></li>
+      <li><a routerLink="/consultant/metrics" routerLinkActive="active">Métricas</a></li>
     </ng-container>
 
   </ul>
@@ -36,28 +38,35 @@
   <button class="menu-btn" (click)="toggleMenu()">☰</button>
 </nav>
 
-<!-- MENU MOBILE -->
+<!-- ============================== -->
+<!--        MENU MOBILE            -->
+<!-- ============================== -->
 <div class="mobile-menu" *ngIf="isMenuOpen && user">
 
+  <!-- EMPRENDEDOR -->
   <ng-container *ngIf="role === 'ENTREPRENEUR'">
-    <a routerLink="/home">Inicio</a>
-    <a routerLink="/education">Educación Financiera</a>
-    <a routerLink="/debts">Mis Deudas</a>
-    <a routerLink="/consultants">Emprendedores</a>
-    <a routerLink="/payment-history">Historial</a>
-    <a routerLink="/simulator">Simulador</a>
-    <a routerLink="/reviews">Reseñas</a>
+    <a routerLink="/home" (click)="closeMenu()">Inicio</a>
+    <a routerLink="/education" (click)="closeMenu()">Educación Financiera</a>
+    <a routerLink="/debts" (click)="closeMenu()">Mis Deudas</a>
+    <a routerLink="/consultants" (click)="closeMenu()">Emprendedores</a>
+    <a routerLink="/payment-history" (click)="closeMenu()">Historial</a>
+    <a routerLink="/simulator" (click)="closeMenu()">Simulador</a>
+    <a routerLink="/reviews" (click)="closeMenu()">Reseñas</a>
   </ng-container>
 
+  <!-- CONSULTOR -->
   <ng-container *ngIf="role === 'CONSULTANT'">
-    <a routerLink="/consultant/home">Inicio</a>
-    <a routerLink="/consultant/dashboard">Dashboard</a>
-    <a routerLink="/consultant/services">Servicios</a>
-    <a routerLink="/consultant/cases">Casos</a>
-    <a routerLink="/consultant/metrics">Métricas</a>
+    <a routerLink="/consultant/home" (click)="closeMenu()">Inicio</a>
+    <a routerLink="/consultant/dashboard" (click)="closeMenu()">Dashboard</a>
+    <a routerLink="/consultant/services" (click)="closeMenu()">Servicios</a>
+    <a routerLink="/consultant/cases" (click)="closeMenu()">Casos</a>
+    <a routerLink="/consultant/metrics" (click)="closeMenu()">Métricas</a>
   </ng-container>
 
   <button class="logout-btn-mobile" (click)="logout()">Cerrar Sesión</button>
 </div>
 
+<!-- ============================== -->
+<!--      CONTENIDO DE PÁGINAS     -->
+<!-- ============================== -->
 <router-outlet></router-outlet>

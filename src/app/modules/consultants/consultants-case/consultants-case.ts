@@ -12,31 +12,57 @@ import { ConsultantCase } from '../../../modules/consultants/consultants.model';
   styleUrls: ['./consultants-case.css']
 })
 export class ConsultantCasesComponent implements OnInit {
-  cases: ConsultantCase[] = [];
-  consultantId = Number(localStorage.getItem('consultantId') || 1);
 
-  constructor(private service: ConsultantService) {}
+  cases: ConsultantCase[] = [];
+  consultantId: number = 0;
+
+  constructor(private service: ConsultantService) { }
 
   ngOnInit(): void {
+    this.consultantId = this.getConsultantId();
     this.load();
+  }
+
+  private getConsultantId(): number {
+    const raw = localStorage.getItem('currentUser');
+    if (!raw) return 0;
+    try {
+      const user = JSON.parse(raw);
+      return Number(user?.id ?? 0);
+    } catch {
+      return 0;
+    }
   }
 
   load() {
     this.service.listCases(this.consultantId).subscribe({
       next: d => this.cases = d,
-      error: e => this.toast('Error al cargar casos','error')
+      error: () => this.toast('Error al cargar casos', 'error')
     });
   }
 
   changeStatus(c: ConsultantCase, status: string) {
     this.service.updateCaseStatus(c.id, status).subscribe({
-      next: () => { this.toast('Estado actualizado','success'); this.load(); },
-      error: e => this.toast('Error al actualizar estado','error')
+      next: () => {
+        this.toast('Estado actualizado', 'success');
+        this.load();
+      },
+      error: () => this.toast('Error al actualizar estado', 'error')
     });
   }
 
-  private toast(msg:string, type:'success'|'error'){
-    const bg = type==='success'?'linear-gradient(90deg,#16a34a,#22c55e)':'linear-gradient(90deg,#dc2626,#ef4444)';
-    Toastify({ text:msg, duration:2500, gravity:'top', position:'right', close:true, style:{background:bg,color:'#fff',borderRadius:'10px'} }).showToast();
+  private toast(msg: string, type: 'success' | 'error') {
+    const bg = type === 'success'
+      ? 'linear-gradient(90deg,#16a34a,#22c55e)'
+      : 'linear-gradient(90deg,#dc2626,#ef4444)';
+
+    Toastify({
+      text: msg,
+      duration: 2500,
+      gravity: 'top',
+      position: 'right',
+      close: true,
+      style: { background: bg, color: '#fff', borderRadius: '10px' }
+    }).showToast();
   }
 }

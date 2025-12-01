@@ -18,74 +18,57 @@ export class ConsultantService {
 
   constructor(private http: HttpClient) { }
 
-  // =======================================================
-  // CONSULTANTS
-  // =======================================================
+  // 🚀 SIN TOKEN → CONSULTA FUNCIONA
   listarConsultores(): Observable<Consultant[]> {
-    return this.http.get<Consultant[]>(`${this.api}/consultants`);
+    return this.http.get<Consultant[]>(`${this.api}`);
   }
 
   getConsultant(id: number): Observable<Consultant> {
-    return this.http.get<Consultant>(`${this.api}/consultants/${id}`);
+    return this.http.get<Consultant>(`${this.api}/${id}`);
   }
 
   updateConsultant(id: number, dto: Consultant): Observable<Consultant> {
-    return this.http.put<Consultant>(`${this.api}/consultants/${id}`, dto);
+    return this.http.put<Consultant>(`${this.api}/${id}`, dto);
   }
 
   getSummary(consultantId: number): Observable<ConsultantSummary> {
-    return this.http.get<ConsultantSummary>(`${this.api}/consultants/${consultantId}/summary`);
+    return this.http.get<ConsultantSummary>(`${this.api}/${consultantId}/summary`);
   }
 
-  // ====================
+  // ==========================
   // SERVICES
-  // ====================
-  listServices(consultantId: number) {
-    return this.http.get<ConsultantServiceItem[]>(
-      `${this.api}/${consultantId}/services`
-    );
+  // ==========================
+  listServices(consultantId: number): Observable<ConsultantServiceItem[]> {
+    return this.http.get<ConsultantServiceItem[]>(`${this.api}/${consultantId}/services`);
   }
 
   createService(item: ConsultantServiceItem) {
-    return this.http.post<ConsultantServiceItem>(
-      `${this.api}/services`,
-      item
-    );
+    return this.http.post(`${this.api}/services`, item);
   }
 
   updateService(id: number, item: ConsultantServiceItem) {
-    return this.http.put<ConsultantServiceItem>(
-      `${this.api}/services/${id}`,
-      item
-    );
+    return this.http.put(`${this.api}/services/${id}`, item);
   }
 
   deleteService(id: number) {
-    return this.http.delete<void>(
-      `${this.api}/services/${id}`
-    );
+    return this.http.delete(`${this.api}/services/${id}`);
   }
 
-  // =======================================================
-  // CASES (ASESORÍAS)
-  // =======================================================
+  // ==========================
+  // CASES
+  // ==========================
   listCases(consultantId: number): Observable<ConsultantCase[]> {
-    return this.http.get<ConsultantCase[]>(
-      `${this.api}/requests/by-consultant/${consultantId}`
-    );
+    return this.http.get<ConsultantCase[]>(`${this.api}/requests/by-consultant/${consultantId}`);
   }
 
   updateCaseStatus(id: number, status: string): Observable<void> {
-    return this.http.patch<void>(
-      `${this.api}/requests/${id}/status`,
-      { status }
-    );
+    return this.http.patch<void>(`${this.api}/requests/${id}/status`, { status });
   }
 
-  // =======================================================
+  // ==========================
   // METRICS
-  // =======================================================
+  // ==========================
   getMetrics(consultantId: number): Observable<any> {
-    return this.http.get<any>(`${this.api}/consultants/metrics/${consultantId}`);
+    return this.http.get<any>(`${this.api}/metrics/${consultantId}`);
   }
 }

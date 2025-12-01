@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { UserService } from '../service/user.service';
 import { AuthService } from '../../../services/auth.service';
+import { User, LoginResponse } from '../user-models/user.model';
 
 @Component({
   selector: 'app-login',
@@ -28,10 +29,6 @@ export class LoginComponent {
     private auth: AuthService,
     private router: Router
   ) { }
-
-  // -----------------------
-  // VALIDACIONES
-  // -----------------------
 
   validateEmail() {
     if (!this.email) {
@@ -62,10 +59,6 @@ export class LoginComponent {
     );
   }
 
-  // -----------------------
-  // LOGIN
-  // -----------------------
-
   login() {
     if (!this.isFormValid()) return;
 
@@ -73,46 +66,26 @@ export class LoginComponent {
       email: this.email,
       password: this.password
     }).subscribe({
-      next: (response) => {
+      next: (response: LoginResponse) => {
 
-        if (!response.success || !response.user) {
-          this.message = '❌ ' + response.message;
-          return;
-        }
-
-        // Normalizar rol
-        let role = (response.user.role ?? '').toUpperCase().trim();
-
-        if (role === 'BUYER') role = 'ENTREPRENEUR';
-        if (role === 'ADVISOR') role = 'CONSULTANT';
-
-        const userData = {
-          id: response.user.id,
-          name: response.user.name,
-          email: response.user.email,
-          role
+        const userData: User = {
+          id: response.id,
+          email: response.email,
+          role: response.role,
+          consultantId: response.consultantId
         };
 
-        // Guardar usuario general
+        localStorage.setItem('currentUser', JSON.stringify(userData));
         this.auth.setUser(userData);
 
-        // Guardar el ID del consultor para los servicios
-        if (role === 'CONSULTANT') {
-          localStorage.setItem("consultantId", String(response.user.id));
-        }
-
-        // Navegación
-        if (role === 'ENTREPRENEUR') {
+        if (response.role === 'CONSULTANT') {
+          this.router.navigate(['/consultant/home']);
+        } else if (response.role === 'ENTREPRENEUR') {
           this.router.navigate(['/home']);
-        }
-        else if (role === 'CONSULTANT') {
-          this.router.navigate(['/consultant/dashboard']);
-        }
-        else {
-          this.message = '❌ Rol no permitido: ' + role;
+        } else {
+          this.message = '❌ Rol no permitido';
           this.auth.clearUser();
         }
-
       },
       error: () => {
         this.message = '❌ Error al iniciar sesión';
