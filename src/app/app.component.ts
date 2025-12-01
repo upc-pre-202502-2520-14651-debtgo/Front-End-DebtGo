@@ -14,37 +14,34 @@ export class AppComponent implements OnInit {
 
   user: { email: string; role: 'ENTREPRENEUR' | 'CONSULTANT' } | null = null;
   role: 'ENTREPRENEUR' | 'CONSULTANT' | null = null;
-  showNavbar = false;
 
-  isMenuOpen: boolean = false;
+  showNavbar = false;
+  isMenuOpen = false;
 
   constructor(
     private auth: AuthService,
     private router: Router
   ) {
-
-    // Detecta cambio de ruta
-    this.router.events.subscribe(() => {
-      this.updateNavbarVisibility();
-    });
+    this.router.events.subscribe(() => this.updateNavbarVisibility());
   }
 
   ngOnInit(): void {
+
     try {
       const raw = localStorage.getItem('currentUser');
 
       if (raw) {
         const u = JSON.parse(raw);
 
-        // Mantener el OBJETO this.user
         this.user = u;
-
         this.role = u.role ?? null;
       }
 
     } catch (e) {
       console.warn('Error leyendo currentUser de localStorage', e);
     }
+
+    this.updateNavbarVisibility();
   }
 
   updateNavbarVisibility() {
@@ -57,20 +54,21 @@ export class AppComponent implements OnInit {
       '/payment-method'
     ];
 
-    // Ocultar en rutas públicas
+    // No navbar en rutas ocultas
     if (hiddenRoutes.some(r => path.includes(r))) {
       this.showNavbar = false;
       return;
     }
 
-    if (path.startsWith('/consultant')) {
+    // Mostrar navbar si hay usuario (independiente del rol)
+    if (this.user) {
       this.showNavbar = true;
       return;
     }
 
-    // Mostrar navbar solo si hay usuario
-    this.showNavbar = !!this.user;
+    this.showNavbar = false;
   }
+
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
