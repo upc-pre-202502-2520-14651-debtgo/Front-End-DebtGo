@@ -37,7 +37,10 @@ export class DashboardService {
     return { headers: new HttpHeaders({ Authorization: `Bearer ${token}` }) };
   }
 
-  getDashboard(id: number) {
-    return this.http.get(`${this.apiUrl}/${id}`, this.headers());
+  getDashboard(id: number): Observable<ConsultantDashboard> {
+    return this.http.get<ConsultantDashboard>(
+      `${this.apiUrl}/${id}`,
+      this.headers()
+    );
   }
 }

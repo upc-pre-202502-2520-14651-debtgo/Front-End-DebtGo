@@ -12,7 +12,7 @@ import { ChartConfiguration, ChartOptions } from 'chart.js';
   styleUrls: ['./dashboard.css']
 })
 export class DashboardComponent implements OnInit {
-  data?: ConsultantDashboard;
+  data: ConsultantDashboard | null = null;
   isLoading = true;
   errorMessage = '';
   consultantId = 1;
@@ -99,7 +99,7 @@ export class DashboardComponent implements OnInit {
 
   loadDashboard() {
     this.dashboardService.getDashboard(this.consultantId).subscribe({
-      next: (res) => {
+      next: (res: ConsultantDashboard) => {
         this.data = res;
         this.isLoading = false;
 
