@@ -1,96 +1,95 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { forkJoin } from 'rxjs';
-import {
-  HomeService,
-  HomeSummary,
-  HomeNotification,
-  HomeMovement,
-  EducationHighlight
-} from '../../../services/home.service';
+import { UserService } from '../service/user.service';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-user-register',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './user-register.html',
   styleUrls: ['./user-register.css']
 })
-export class UserRegisterComponent implements OnInit {
-  private homeSrv = inject(HomeService);
-  private router = inject(Router);
+export class UserRegisterComponent {
 
-  consultantStats = {
-    activeCases: 12,
-    clients: 45,
-    rating: '4.8 ⭐'
-  };
+  email = '';
+  password = '';
+  confirmPassword = '';
+  role: 'ENTREPRENEUR' | 'CONSULTANT' = 'ENTREPRENEUR';
 
-  // Estado UI
-  loading = true;
-  errorMsg = '';
+  message = '';
 
-  // Datos
-  user: string = '';
-  summary!: HomeSummary;
-  notifications: HomeNotification[] = [];
-  movements: HomeMovement[] = [];
-  highlights: EducationHighlight[] = [];
+  showPassword = false;
+  emailError = '';
+  passwordError = '';
+  confirmPasswordError = '';
 
-  role: string | null = null;
+  constructor(private userService: UserService, private router: Router) { }
 
-  ngOnInit(): void {
-    try {
-      const raw = localStorage.getItem('currentUser');
-      if (raw) {
-        const u = JSON.parse(raw);
+  validateEmail() {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    this.emailError = regex.test(this.email)
+      ? ''
+      : '⚠️ Ingresa un email válido';
+  }
 
-        this.user = u.email.split('@')[0];
-        this.role = u.role;
-      }
-    } catch (e) {
-      console.warn('Error leyendo currentUser de localStorage', e);
+  validatePassword() {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+    this.passwordError = regex.test(this.password)
+      ? ''
+      : '⚠️ La contraseña debe tener al menos 6 caracteres, una mayúscula, una minúscula y un número';
+  }
+
+  validateConfirmPassword() {
+    this.confirmPasswordError =
+      this.password === this.confirmPassword
+        ? ''
+        : '⚠️ Las contraseñas no coinciden';
+  }
+
+  isFormValid(): boolean {
+    return (
+      this.email !== '' &&
+      this.password !== '' &&
+      this.confirmPassword !== '' &&
+      !this.emailError &&
+      !this.passwordError &&
+      !this.confirmPasswordError
+    );
+  }
+
+  register() {
+    if (!this.isFormValid()) {
+      this.message = '⚠️ Completa correctamente todos los campos antes de continuar';
+      return;
     }
 
-    this.loadData();
-  }
+    const request = {
+      email: this.email,
+      password: this.password,
+      role: this.role
+    };
 
-  private loadData(): void {
-    this.loading = true;
-    this.errorMsg = '';
+    this.userService.registerUser(request).subscribe({
+      next: (response) => {
+        const userData = {
+          id: response.id,
+          email: response.email,
+          role: response.role
+        };
 
-    forkJoin({
-      summary: this.homeSrv.getSummary(),
-      notifications: this.homeSrv.getNotifications(5),
-      movements: this.homeSrv.getMovements(6),
-      highlights: this.homeSrv.getEducationHighlights(3),
-    }).subscribe({
-      next: ({ summary, notifications, movements, highlights }) => {
-        console.log('✅ Summary recibido:', summary);
-        console.log('✅ Notificaciones recibidas:', notifications);
-        console.log('✅ Movimientos recibidos:', movements);
-        console.log('✅ Educación recibida:', highlights);
+        localStorage.setItem('currentUser', JSON.stringify(userData));
 
-        this.summary = summary;
-        this.notifications = notifications;
-        this.movements = movements;
-        this.highlights = highlights;
-        this.loading = false;
+        if (response.role === 'ENTREPRENEUR') {
+          this.router.navigate(['/home']);
+        } else if (response.role === 'CONSULTANT') {
+          this.router.navigate(['/consultant/home']);
+        }
       },
-      error: (err) => {
-        console.error('❌ Error al cargar datos del Home:', err);
-        this.errorMsg = 'No pudimos cargar tu panel. Inténtalo nuevamente.';
-        this.loading = false;
+      error: () => {
+        this.message = '❌ Error al registrar usuario';
       }
     });
-  }
-
-  // Helpers UI
-  trackById = (_: number, item: { id: number }) => item.id;
-  trackByIndex = (_: number, __: unknown) => _;
-
-  go(path: string) {
-    this.router.navigate([path]);
   }
 }
