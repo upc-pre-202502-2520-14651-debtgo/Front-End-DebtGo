@@ -9,7 +9,7 @@ import { LoginResponse, RegisterRequest, User } from '../modules/users/user-mode
 })
 export class AuthService {
 
-    private apiUrl = `${environment.apiUrl}/api/users`;
+    private apiUrl = `${environment.apiUrl}/users`;
 
     private userSubject = new BehaviorSubject<User | null>(null);
     user$ = this.userSubject.asObservable();
