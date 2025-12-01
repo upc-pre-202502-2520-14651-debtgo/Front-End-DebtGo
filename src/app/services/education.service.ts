@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Education {
   id: number;
@@ -16,7 +17,7 @@ export interface Education {
 })
 export class EducationService {
 
-  private api = 'http://localhost:8081/api/v1/education';
+  private api = `${environment.apiUrl}/api/education`;
 
   constructor(private http: HttpClient) { }
 
@@ -26,5 +27,9 @@ export class EducationService {
 
   obtenerPorId(id: number): Observable<Education> {
     return this.http.get<Education>(`${this.api}/${id}`);
+  }
+
+  getHighlights() {
+    return this.http.get(`${this.api}/highlights`);
   }
 }
