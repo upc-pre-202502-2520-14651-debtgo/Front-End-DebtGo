@@ -63,12 +63,10 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    // Ocultar toda la zona /consultant exceptuando /consultant/home
-    if (path.startsWith('/consultant/') && !path.includes('/consultant/home')) {
-      this.showNavbar = false;
+    if (path.startsWith('/consultant')) {
+      this.showNavbar = true;
       return;
     }
-
 
     // Mostrar navbar solo si hay usuario
     this.showNavbar = !!this.user;
