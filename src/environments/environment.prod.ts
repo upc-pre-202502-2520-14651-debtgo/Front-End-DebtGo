@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://backend-debtogo.homeservergv.com'
+  apiUrl: 'https://back-end-debtgo.onrender.com/swagger-ui/index.html'
 };
