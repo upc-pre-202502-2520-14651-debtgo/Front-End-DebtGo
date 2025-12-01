@@ -1,68 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { CaseService, CaseItem } from '../../../services/case.service';
 import { CommonModule } from '@angular/common';
-import Toastify from 'toastify-js';
-import { ConsultantService } from '../../../services/consultants.service';
-import { ConsultantCase } from '../../../modules/consultants/consultants.model';
 
 @Component({
-  selector: 'app-consultant-cases',
   standalone: true,
+  selector: 'app-consultant-cases',
   imports: [CommonModule],
-  templateUrl: './consultants-case.html',
-  styleUrls: ['./consultants-case.css']
+  templateUrl: '../../consultants/consultants-case/consultants-case.html',
+  styleUrls: ['../../consultants/consultants-case/consultants-case.css']
 })
 export class ConsultantCasesComponent implements OnInit {
 
-  cases: ConsultantCase[] = [];
-  consultantId: number = 0;
+  private caseSrv = inject(CaseService);
 
-  constructor(private service: ConsultantService) { }
+  cases: CaseItem[] = [];
+  loading = true;
 
   ngOnInit(): void {
-    this.consultantId = this.getConsultantId();
-    this.load();
-  }
+    const u = JSON.parse(localStorage.getItem('currentUser')!);
 
-  private getConsultantId(): number {
-    const raw = localStorage.getItem('currentUser');
-    if (!raw) return 0;
-    try {
-      const user = JSON.parse(raw);
-      return Number(user?.id ?? 0);
-    } catch {
-      return 0;
-    }
-  }
-
-  load() {
-    this.service.listCases(this.consultantId).subscribe({
-      next: d => this.cases = d,
-      error: () => this.toast('Error al cargar casos', 'error')
-    });
-  }
-
-  changeStatus(c: ConsultantCase, status: string) {
-    this.service.updateCaseStatus(c.id, status).subscribe({
-      next: () => {
-        this.toast('Estado actualizado', 'success');
-        this.load();
+    this.caseSrv.listarCasos(u.id).subscribe({
+      next: res => {
+        this.cases = res;
+        this.loading = false;
       },
-      error: () => this.toast('Error al actualizar estado', 'error')
+      error: err => {
+        console.error('Error cargando casos', err);
+        this.loading = false;
+      }
     });
   }
 
-  private toast(msg: string, type: 'success' | 'error') {
-    const bg = type === 'success'
-      ? 'linear-gradient(90deg,#16a34a,#22c55e)'
-      : 'linear-gradient(90deg,#dc2626,#ef4444)';
-
-    Toastify({
-      text: msg,
-      duration: 2500,
-      gravity: 'top',
-      position: 'right',
-      close: true,
-      style: { background: bg, color: '#fff', borderRadius: '10px' }
-    }).showToast();
+  changeStatus(c: CaseItem, status: CaseItem['status']) {
+    this.caseSrv.changeStatus(c.id, status).subscribe({
+      next: () => {
+        c.status = status;
+      },
+      error: err => console.error('Error cambiando estado:', err)
+    });
   }
 }

@@ -1,24 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { MetricsService, Metrics } from '../../../services/metrics.service';
 import { CommonModule } from '@angular/common';
-import { ConsultantService } from '../../../services/consultants.service';
 
 @Component({
-  selector: 'app-consultant-metrics',
   standalone: true,
+  selector: 'app-consultant-metrics',
   imports: [CommonModule],
-  templateUrl: './consultants-metric.html',
-  styleUrls: ['./consultants-metric.css']
+  templateUrl: '../../consultants/consultants-metric/consultants-metric.html',
+  styleUrls: ['../../consultants/consultants-metric/consultants-metric.css']
 })
 export class ConsultantMetricsComponent implements OnInit {
-  metrics: any;
-  consultantId = Number(localStorage.getItem('consultantId') || 1);
 
-  constructor(private service: ConsultantService) {}
+  private metricsSrv = inject(MetricsService);
+
+  metrics: Metrics | null = null;
 
   ngOnInit(): void {
-    this.service.getMetrics(this.consultantId).subscribe({
-      next: d => this.metrics = d,
-      error: e => console.error('Error metrics', e)
+    const u = JSON.parse(localStorage.getItem('currentUser')!);
+
+    this.metricsSrv.getMetrics(u.id).subscribe({
+      next: data => this.metrics = data,
+      error: err => console.error('Error cargando métricas', err)
     });
   }
 }

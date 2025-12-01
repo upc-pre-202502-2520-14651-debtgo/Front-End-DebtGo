@@ -25,26 +25,19 @@ export interface ConsultantDashboard {
   ultimasResenas: ReviewResponse[];
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class DashboardService {
 
-  private apiUrl = `${environment.apiUrl}/api/v1/consultants`;
+  private apiUrl = `${environment.apiUrl}/api/consultants/dashboard`;
 
   constructor(private http: HttpClient) { }
 
   private headers() {
     const token = localStorage.getItem('token') ?? '';
-    return {
-      headers: new HttpHeaders({ Authorization: `Bearer ${token}` })
-    };
+    return { headers: new HttpHeaders({ Authorization: `Bearer ${token}` }) };
   }
 
-  getDashboard(consultantId: number): Observable<ConsultantDashboard> {
-    return this.http.get<ConsultantDashboard>(
-      `${this.apiUrl}/dashboard/${consultantId}`,
-      this.headers()
-    );
+  getDashboard(id: number) {
+    return this.http.get(`${this.apiUrl}/${id}`, this.headers());
   }
 }
