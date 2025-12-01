@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { UserService } from '../service/user.service';
-import { RegisterResponse } from '../user-models/user.model';
 
 @Component({
   selector: 'app-user-register',
@@ -19,16 +18,21 @@ export class UserRegisterComponent {
   role = 'ENTREPRENEUR';
   message = '';
 
-  showPassword: boolean = false;
-  emailError: string = '';
-  passwordError: string = '';
-  confirmPasswordError: string = '';
+  showPassword = false;
+  emailError = '';
+  passwordError = '';
+  confirmPasswordError = '';
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) { }
 
   validateEmail() {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    this.emailError = regex.test(this.email) ? '' : '⚠️ Ingresa un email válido';
+    this.emailError = regex.test(this.email)
+      ? ''
+      : '⚠️ Ingresa un email válido';
   }
 
   validatePassword() {
@@ -40,7 +44,9 @@ export class UserRegisterComponent {
 
   validateConfirmPassword() {
     this.confirmPasswordError =
-      this.password === this.confirmPassword ? '' : '⚠️ Las contraseñas no coinciden';
+      this.password === this.confirmPassword
+        ? ''
+        : '⚠️ Las contraseñas no coinciden';
   }
 
   isFormValid(): boolean {
@@ -61,7 +67,6 @@ export class UserRegisterComponent {
     }
 
     const request = {
-      name: this.email.split('@')[0],
       email: this.email,
       password: this.password,
       role: this.role
@@ -69,19 +74,13 @@ export class UserRegisterComponent {
 
     this.userService.registerUser(request).subscribe({
       next: (response) => {
-
-        const name = this.email.split('@')[0];
-
         const userData = {
           id: response.id,
-          name: name,
           email: response.email,
           role: response.role
         };
 
-        // Guardar usuario
         localStorage.setItem('currentUser', JSON.stringify(userData));
-
 
         if (response.role === 'ENTREPRENEUR') {
           this.router.navigate(['/home']);

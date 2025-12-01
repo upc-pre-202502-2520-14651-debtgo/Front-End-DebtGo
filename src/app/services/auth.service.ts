@@ -47,8 +47,4 @@ export class AuthService {
     isLogged(): boolean {
         return !!this.userSubject.value;
     }
-
-    login(data: any) {
-        return this.http.post(`${environment.apiUrl}/api/users/login`, data)
-    }
 }
