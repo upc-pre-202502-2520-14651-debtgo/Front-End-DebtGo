@@ -14,8 +14,8 @@ import {
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: '../../home/home.html',
-  styleUrls: ['../../home/home.css']
+  templateUrl: './user-register.html',
+  styleUrls: ['./user-register.css']
 })
 export class UserRegisterComponent implements OnInit {
   private homeSrv = inject(HomeService);

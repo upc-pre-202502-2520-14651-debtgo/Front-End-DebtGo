@@ -31,7 +31,7 @@
   </ul>
 
   <div class="nav-user">
-    <div class="avatar">{{ user?.email?.charAt(0).toUpperCase() }}</div>
+    <div class="avatar">{{ user?.email?.[0]?.toUpperCase() }}</div>
     <button class="logout-btn" (click)="logout()">Cerrar Sesión</button>
   </div>
 

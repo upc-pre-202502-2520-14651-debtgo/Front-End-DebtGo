@@ -12,8 +12,8 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent implements OnInit {
 
-  user: any = null;
-  role: string | null = null;
+  user: { email: string; role: 'ENTREPRENEUR' | 'CONSULTANT' } | null = null;
+  role: 'ENTREPRENEUR' | 'CONSULTANT' | null = null;
   showNavbar = false;
 
   isMenuOpen: boolean = false;
@@ -83,8 +83,9 @@ export class AppComponent implements OnInit {
   }
 
   logout(): void {
-    this.auth.clearUser();
-    this.closeMenu();
+    localStorage.removeItem('currentUser');
+    this.user = null;
+    this.role = null;
     this.router.navigate(['/login']);
   }
 }
