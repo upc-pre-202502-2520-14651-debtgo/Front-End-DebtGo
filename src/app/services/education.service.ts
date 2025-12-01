@@ -17,7 +17,7 @@ export interface Education {
 })
 export class EducationService {
 
-  private api = `${environment.apiUrl}/api/education`;
+  private api = `${environment.apiUrl}/education`;
 
   constructor(private http: HttpClient) { }
 
