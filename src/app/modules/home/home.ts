@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
       if (raw) {
         const u = JSON.parse(raw);
 
-        this.user = u.name;   // SOLO EL NOMBRE
+        this.user = u.email.split('@')[0];
         this.role = u.role;
       }
     } catch (e) {
