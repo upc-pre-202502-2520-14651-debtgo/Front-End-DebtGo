@@ -17,7 +17,7 @@ import {
   templateUrl: '../../home/home.html',
   styleUrls: ['../../home/home.css']
 })
-export class HomeComponent implements OnInit {
+export class UserRegisterComponent implements OnInit {
   private homeSrv = inject(HomeService);
   private router = inject(Router);
 
@@ -26,7 +26,6 @@ export class HomeComponent implements OnInit {
     clients: 45,
     rating: '4.8 ⭐'
   };
-
 
   // Estado UI
   loading = true;
