@@ -2,6 +2,9 @@ export interface Consultant {
   id: number;
   fullName: string;
   specialty: string;
+  experience: string;
+  description: string;
+  hourlyRate: number;
   rating: number;
   pricePerHour: number;
   photoUrl: string;
