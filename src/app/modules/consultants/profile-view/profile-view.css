@@ -1,0 +1,72 @@
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+.header {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.photo {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.info h2 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.specialty {
+  color: #6a11cb;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.stats {
+  margin-top: 12px;
+  display: flex;
+  gap: 15px;
+  font-size: 16px;
+}
+
+.available {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.bio-box, .services-box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 25px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.contact-btn {
+  margin-top: 30px;
+  padding: 14px 30px;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.contact-btn:hover {
+  opacity: 0.9;
+}
+
+.loading {
+  text-align: center;
+  padding: 60px;
+  font-size: 20px;
+}

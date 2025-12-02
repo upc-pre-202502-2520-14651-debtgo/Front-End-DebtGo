@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { ConsultantService } from '../../services/consultants.service';
 import { Consultant } from './consultants.model';
 
@@ -16,17 +15,17 @@ export class ConsultantComponent implements OnInit {
 
   consultants: Consultant[] = [];
   consultoresFiltrados: Consultant[] = [];
-  filtro = '';
+  filtro: string = '';
 
   constructor(private consultantService: ConsultantService) { }
 
   ngOnInit(): void {
-    this.consultantService.listarConsultores().subscribe({
+    this.consultantService.getAllConsultants().subscribe({
       next: (data) => {
         this.consultants = data;
         this.consultoresFiltrados = data;
       },
-      error: (err) => console.error('Error al cargar consultores:', err)
+      error: (err) => console.error('Error cargando consultores:', err)
     });
   }
 

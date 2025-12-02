@@ -22,7 +22,11 @@ export class ConsultantService {
     return this.http.get<Consultant[]>(this.api);
   }
 
-  getConsultant(id: number) {
+  getAllConsultants() {
+    return this.http.get<Consultant[]>(this.api);
+  }
+
+  getConsultantById(id: number): Observable<Consultant> {
     return this.http.get<Consultant>(`${this.api}/${id}`);
   }
 

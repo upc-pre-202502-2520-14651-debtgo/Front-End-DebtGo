@@ -1,0 +1,41 @@
+<div class="container" *ngIf="!loading && consultant">
+
+    <div class="header">
+        <img [src]="consultant.photoUrl || '/assets/default-consultant.png'" class="photo" />
+
+        <div class="info">
+            <h2>{{ consultant.fullName }}</h2>
+            <p class="specialty">{{ consultant.specialty }}</p>
+
+            <div class="stats">
+                <span>⭐ {{ consultant.rating }}/5</span>
+                <span>💰 S/ {{ consultant.pricePerHour }}/hora</span>
+                <span [class.available]="consultant.available">
+                    ● {{ consultant.available ? "Disponible" : "No disponible" }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="bio-box">
+        <h3>Sobre el consultor</h3>
+        <p>{{ consultant.bio || "El consultor está actualizando su información profesional." }}</p>
+    </div>
+
+    <div class="services-box">
+        <h3>Servicios ofrecidos</h3>
+        <ul>
+            <li *ngFor="let s of consultant.services">
+                ✔ {{ s.name }} — <strong>S/ {{ s.price }}</strong>
+            </li>
+        </ul>
+    </div>
+
+    <button class="contact-btn">
+        Contactar
+    </button>
+</div>
+
+<div class="loading" *ngIf="loading">
+    Cargando perfil...
+</div>

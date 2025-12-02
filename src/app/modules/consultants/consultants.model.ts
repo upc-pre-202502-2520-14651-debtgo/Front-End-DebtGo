@@ -1,12 +1,11 @@
 export interface Consultant {
-  id?: number;
+  id: number;
   fullName: string;
   specialty: string;
-  experience: string;   // "5 años", etc.
-  description: string;
-  profileImage?: string;
-  rating?: number;      // 0..5
-  hourlyRate?: number;  // tarifa por hora
+  rating: number;
+  pricePerHour: number;
+  photoUrl: string;
+  available: boolean;
 }
 
 export interface ConsultantServiceItem {
@@ -18,10 +17,13 @@ export interface ConsultantServiceItem {
 }
 
 export interface ConsultantSummary {
-  servedClients: number;
-  activeAdvisories: number;
-  publishedServices: number;
-  avgRating: number;
+  id: number;
+  fullName: string;
+  specialty: string;
+  rating: number;
+  pricePerHour: number;
+  photoUrl: string;
+  available: boolean;
 }
 
 export interface ConsultantCase {

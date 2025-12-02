@@ -1,26 +1,28 @@
 <section class="consultores">
   <h2>👨‍💼 Consultores disponibles</h2>
 
-  <!-- Barra de búsqueda -->
   <div class="search-bar">
-    <input
-      type="text"
-      placeholder="🔍 Buscar consultor por nombre o especialidad"
-      [(ngModel)]="filtro"
-      (input)="filtrarConsultores()"
-    />
+    <input type="text" placeholder="🔍 Buscar consultor por nombre o especialidad" [(ngModel)]="filtro"
+      (input)="filtrarConsultores()" />
   </div>
 
-  <!-- Grid de consultores -->
   <div class="consultores-grid">
     <div class="consultor-card" *ngFor="let c of consultoresFiltrados">
-      <img [src]="c.profileImage || 'assets/default-profile.png'" alt="Foto de consultor" />
+
+      <img [src]="c.photoUrl || 'assets/default-profile.png'" alt="Foto de consultor" />
+
       <h3>{{ c.fullName }}</h3>
+
       <p class="especialidad">💼 {{ c.specialty }}</p>
-      <p class="descripcion">{{ c.description || 'Sin descripción disponible' }}</p>
-      <div class="rating">⭐ {{ c.rating || 4.5 }}/5</div>
-      <p class="tarifa">💰 S/ {{ c.hourlyRate }} / hora</p>
-      <p class="status online">🟢 Disponible</p>
+
+      <div class="rating">⭐ {{ c.rating }}/5</div>
+
+      <p class="tarifa">💰 S/ {{ c.pricePerHour }} / hora</p>
+
+      <p class="status" [class.online]="c.available">
+        {{ c.available ? '🟢 Disponible' : '🔴 No disponible' }}
+      </p>
+
       <button>Contactar</button>
     </div>
   </div>
