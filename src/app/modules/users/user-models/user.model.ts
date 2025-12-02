@@ -1,7 +1,9 @@
+export type UserRole = 'CONSULTANT' | 'ENTREPRENEUR';
+
 export interface User {
   id: number;
   email: string;
-  role: 'ENTREPRENEUR' | 'CONSULTANT';
+  role: UserRole;
   consultantId?: number | null;
   token?: string;
 }

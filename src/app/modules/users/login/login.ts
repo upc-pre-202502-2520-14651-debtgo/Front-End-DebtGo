@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { UserService } from '../service/user.service';
 import { AuthService } from '../../../services/auth.service';
-import { User, LoginResponse } from '../user-models/user.model';
+import { User, LoginResponse, UserRole } from '../user-models/user.model';
 
 @Component({
   selector: 'app-login',
@@ -71,7 +71,7 @@ export class LoginComponent {
         const userData: User = {
           id: response.id,
           email: response.email,
-          role: response.role,
+          role: response.role as UserRole,
           consultantId: response.consultantId
         };
 
