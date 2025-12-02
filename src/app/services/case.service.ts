@@ -27,16 +27,11 @@ export class CaseService {
   }
 
   /** Listar casos de un consultor */
-  listarCasos(consultantId: number) {
-    return this.http.get(
-      `${this.api}/by-consultant/${consultantId}`
-    );
+  listarCasos(consultantId: number): Observable<CaseItem[]> {
+    return this.http.get<CaseItem[]>(`${this.api}/consultant/${consultantId}`);
   }
 
-  changeStatus(caseId: number, status: string) {
-    return this.http.patch(
-      `${this.api}/${caseId}/status`,
-      { status }
-    );
+  changeStatus(id: number, status: string): Observable<void> {
+    return this.http.put<void>(`${this.api}/${id}/status`, { status });
   }
 }

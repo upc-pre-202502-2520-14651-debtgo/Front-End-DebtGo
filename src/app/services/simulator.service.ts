@@ -14,38 +14,37 @@ export interface SimulationReq {
 export interface SimulationRow {
   n: number; date: string; payment: number; interest: number; principal: number; balance: number;
 }
-export interface SimulationRes {
+export interface SimulationPreview {
   monthlyPayment: number;
   totalInterest: number;
   totalPayment: number;
   schedule: SimulationRow[];
-  simulationId?: number;
+}
+
+export interface SimulationSaved {
+  simulationId: number;
 }
 
 @Injectable({ providedIn: 'root' })
 export class SimulatorService {
 
-  private baseUrl = `${environment.apiUrl}/simulations`;
+  private api = `${environment.apiUrl}/simulations`;
 
   constructor(private http: HttpClient) { }
 
   preview(body: SimulationReq) {
-    return this.http.post(`${this.baseUrl}/preview`, body);
+    return this.http.post<SimulationPreview>(`${this.api}/preview`, body);
   }
 
   create(body: SimulationReq) {
-    return this.http.post(this.baseUrl, body);
+    return this.http.post<SimulationSaved>(`${this.api}/save`, body);
   }
 
   listByUser(userId: number) {
-    return this.http.get(`${this.baseUrl}/by-user/${userId}`);
+    return this.http.get<any[]>(`${this.api}/history/${userId}`);
   }
 
-  exportarPDF(body: any) {
-    return this.http.post(
-      `${environment.apiUrl.replace('/v1', '')}/pdf/simulation`,
-      body,
-      { responseType: 'blob' }
-    );
+  exportarPDF(dto: any) {
+    return this.http.post(`${this.api}/pdf`, dto, { responseType: 'blob' });
   }
 }

@@ -3,6 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+export interface Pago {
+  id: number;
+  amount: number;
+  status: 'Pagado' | 'Pendiente';
+  paymentDate: string;
+  serviceName: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
 
@@ -15,6 +23,6 @@ export class PaymentService {
   }
 
   listByConsultant(id: number) {
-    return this.http.get(`${this.api}/by-consultant/${id}`);
+    return this.http.get<Pago[]>(`${this.api}/consultant/${id}`);
   }
 }

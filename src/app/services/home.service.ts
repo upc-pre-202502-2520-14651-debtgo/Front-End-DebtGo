@@ -13,25 +13,26 @@ export interface HomeSummary {
 
 export interface HomeNotification {
   id: number;
-  type: 'PAYMENT' | 'ALERT' | 'INFO';
+  type: string;
   message: string;
   date: string;
-  read?: boolean;
+  read: boolean;
 }
 
 export interface HomeMovement {
   date: string;
   concept: string;
   amount: number;
-  status: 'PAID' | 'PENDING' | 'OVERDUE';
+  status: string;
 }
 
 export interface EducationHighlight {
   id: number;
-  title: string;
   category: string;
-  level: 'BÁSICO' | 'INTERMEDIO' | 'AVANZADO';
-  link: string;
+  title: string;
+  level: string;
+  pdfLink: string;
+  videoLink: string;
 }
 
 /** ====== SERVICIO ====== */
@@ -43,18 +44,18 @@ export class HomeService {
   constructor(private http: HttpClient) { }
 
   getSummary() {
-    return this.http.get(`${this.api}/summary`);
+    return this.http.get<HomeSummary>(`${this.api}/home/summary`);
   }
 
   getNotifications(limit: number) {
-    return this.http.get(`${this.api}/notifications?limit=${limit}`);
+    return this.http.get<HomeNotification[]>(`${this.api}/home/notifications?limit=${limit}`);
   }
 
   getMovements(limit: number) {
-    return this.http.get(`${this.api}/movements?limit=${limit}`);
+    return this.http.get<HomeMovement[]>(`${this.api}/home/movements?limit=${limit}`);
   }
 
   getEducationHighlights(limit: number) {
-    return this.http.get(`${environment.apiUrl}/education/highlights?limit=${limit}`);
+    return this.http.get<EducationHighlight[]>(`/api/v1/education/highlights`);
   }
 }
