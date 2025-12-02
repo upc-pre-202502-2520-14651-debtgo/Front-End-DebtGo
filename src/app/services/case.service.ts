@@ -13,7 +13,7 @@ export interface CaseItem {
 @Injectable({ providedIn: 'root' })
 export class CaseService {
 
-  private api = `${environment.apiUrl}/api/v1/case-requests`;
+  private api = `${environment.apiUrl}/consultants/requests`;
 
   constructor(private http: HttpClient) { }
 
@@ -27,22 +27,16 @@ export class CaseService {
   }
 
   /** Listar casos de un consultor */
-  listarCasos(consultantId: number): Observable<CaseItem[]> {
-    return this.http.get<CaseItem[]>(
-      `${this.api}/requests/by-consultant/${consultantId}`,
-      this.headers()
+  listarCasos(consultantId: number) {
+    return this.http.get(
+      `${this.api}/by-consultant/${consultantId}`
     );
   }
 
-  /** Cambiar estado */
-  changeStatus(
-    caseId: number,
-    status: CaseItem['status']
-  ): Observable<any> {
-    return this.http.put(
-      `${this.api}/requests/${caseId}/status`,
-      { status },
-      this.headers()
+  changeStatus(caseId: number, status: string) {
+    return this.http.patch(
+      `${this.api}/${caseId}/status`,
+      { status }
     );
   }
 }

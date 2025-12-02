@@ -17,7 +17,7 @@ export interface Review {
 
 @Injectable({ providedIn: 'root' })
 export class ReviewService {
-  private apiUrl = `${environment.apiUrl}/api/v1/reviews`;
+  private apiUrl = `${environment.apiUrl}/reviews`;
 
   constructor(private http: HttpClient) { }
 
@@ -34,5 +34,9 @@ export class ReviewService {
 
   getByConsultant(consultantId: number): Observable<Review[]> {
     return this.http.get<Review[]>(`${this.apiUrl}/consultant/${consultantId}`);
+  }
+
+  replyReview(id: number, reply: string) {
+    return this.http.put(`${this.apiUrl}/${id}/reply`, { reply });
   }
 }

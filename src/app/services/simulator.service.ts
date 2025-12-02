@@ -25,25 +25,25 @@ export interface SimulationRes {
 @Injectable({ providedIn: 'root' })
 export class SimulatorService {
 
-  private baseUrl = `${environment.apiUrl}/api/v1/simulations`;
+  private baseUrl = `${environment.apiUrl}/simulations`;
 
   constructor(private http: HttpClient) { }
 
-  preview(body: SimulationReq): Observable<SimulationRes> {
-    return this.http.post<SimulationRes>(`${this.baseUrl}/preview`, body);
+  preview(body: SimulationReq) {
+    return this.http.post(`${this.baseUrl}/preview`, body);
   }
 
-  create(body: SimulationReq): Observable<SimulationRes> {
-    return this.http.post<SimulationRes>(this.baseUrl, body);
+  create(body: SimulationReq) {
+    return this.http.post(this.baseUrl, body);
   }
 
   listByUser(userId: number) {
-    return this.http.get<any[]>(`${this.baseUrl}/by-user/${userId}`);
+    return this.http.get(`${this.baseUrl}/by-user/${userId}`);
   }
 
-  exportarPDF(body: any): Observable<Blob> {
+  exportarPDF(body: any) {
     return this.http.post(
-      `${environment.apiUrl}/v1/pdf/simulation`,
+      `${environment.apiUrl.replace('/v1', '')}/pdf/simulation`,
       body,
       { responseType: 'blob' }
     );

@@ -28,7 +28,7 @@ export interface ConsultantDashboard {
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
 
-  private apiUrl = `${environment.apiUrl}/api/v1/dashboard`;
+  private apiUrl = `${environment.apiUrl.replace('/v1', '')}/consultants/dashboard`;
 
   constructor(private http: HttpClient) { }
 
@@ -37,10 +37,7 @@ export class DashboardService {
     return { headers: new HttpHeaders({ Authorization: `Bearer ${token}` }) };
   }
 
-  getDashboard(id: number): Observable<ConsultantDashboard> {
-    return this.http.get<ConsultantDashboard>(
-      `${this.apiUrl}/${id}`,
-      this.headers()
-    );
+  getDashboard(id: number) {
+    return this.http.get<ConsultantDashboard>(`${this.apiUrl}/${id}`);
   }
 }

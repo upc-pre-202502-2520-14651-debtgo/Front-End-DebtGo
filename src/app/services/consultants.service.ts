@@ -14,15 +14,15 @@ import { environment } from '../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class ConsultantService {
 
-  private api = `${environment.apiUrl}/api/v1/consultants`;
+  private api = `${environment.apiUrl}/consultants`;
 
   constructor(private http: HttpClient) { }
 
-  listarConsultores(): Observable<Consultant[]> {
+  listarConsultores() {
     return this.http.get<Consultant[]>(this.api);
   }
 
-  getConsultant(id: number): Observable<Consultant> {
+  getConsultant(id: number) {
     return this.http.get<Consultant>(`${this.api}/${id}`);
   }
 
@@ -30,12 +30,12 @@ export class ConsultantService {
     return this.http.put<Consultant>(`${this.api}/${id}`, dto);
   }
 
-  getSummary(id: number): Observable<ConsultantSummary> {
+  getSummary(id: number) {
     return this.http.get<ConsultantSummary>(`${this.api}/${id}/summary`);
   }
 
   // SERVICES
-  listServices(id: number): Observable<ConsultantServiceItem[]> {
+  listServices(id: number) {
     return this.http.get<ConsultantServiceItem[]>(`${this.api}/${id}/services`);
   }
 
@@ -52,16 +52,15 @@ export class ConsultantService {
   }
 
   // CASES
-  listCases(id: number): Observable<ConsultantCase[]> {
+  listCases(id: number) {
     return this.http.get<ConsultantCase[]>(`${this.api}/requests/by-consultant/${id}`);
   }
 
-  updateCaseStatus(id: number, status: string): Observable<void> {
-    return this.http.patch<void>(`${this.api}/requests/${id}/status`, { status });
+  updateCaseStatus(id: number, status: string) {
+    return this.http.patch(`${this.api}/requests/${id}/status`, { status });
   }
 
-  // METRICS
-  getMetrics(id: number): Observable<any> {
-    return this.http.get<any>(`${this.api}/metrics/${id}`);
+  getMetrics(id: number) {
+    return this.http.get(`${this.api}/metrics/${id}`);
   }
 }
