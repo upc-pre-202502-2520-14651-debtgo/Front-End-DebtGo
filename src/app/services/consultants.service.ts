@@ -14,11 +14,10 @@ import { environment } from '../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class ConsultantService {
 
-  private api = `${environment.apiUrl}/v1/consultants`;
+  private api = `${environment.apiUrl}/api/v1/consultants`;
 
   constructor(private http: HttpClient) { }
 
-  // 🚀 SIN TOKEN → CONSULTA FUNCIONA
   listarConsultores(): Observable<Consultant[]> {
     return this.http.get<Consultant[]>(`${this.api}`);
   }
