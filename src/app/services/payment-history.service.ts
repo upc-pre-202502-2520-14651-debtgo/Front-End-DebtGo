@@ -13,9 +13,9 @@ export interface PaymentHistory {
 
 @Injectable({ providedIn: 'root' })
 export class PaymentHistoryService {
-  private apiUrl = `${environment}/api/pagos`;
+  private apiUrl = `${environment}/v1/payments/history`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   listarPagos(): Observable<PaymentHistory[]> {
     return this.http.get<PaymentHistory[]>(this.apiUrl);

@@ -13,7 +13,7 @@ export interface CaseItem {
 @Injectable({ providedIn: 'root' })
 export class CaseService {
 
-  private api = `${environment.apiUrl}/api/v1/consultants`;
+  private api = `${environment.apiUrl}/v1/case-requests`;
 
   constructor(private http: HttpClient) { }
 

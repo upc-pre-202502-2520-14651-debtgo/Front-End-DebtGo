@@ -38,7 +38,7 @@ export interface EducationHighlight {
 @Injectable({ providedIn: 'root' })
 export class HomeService {
 
-  private base = `${environment.apiUrl}/home`;
+  private base = `${environment.apiUrl}/v1/home`;
 
   constructor(private http: HttpClient) { }
 
