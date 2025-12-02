@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { CommonModule } from '@angular/common';
+import { User } from './modules/users/user-models/user.model';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent implements OnInit {
 
-  user: { email: string; role: 'ENTREPRENEUR' | 'CONSULTANT' } | null = null;
+  user: User | null = null;
   role: 'ENTREPRENEUR' | 'CONSULTANT' | null = null;
 
   showNavbar = false;
@@ -26,20 +27,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    try {
-      const raw = localStorage.getItem('currentUser');
-
-      if (raw) {
-        const u = JSON.parse(raw);
-
-        this.user = u;
-        this.role = u.role ?? null;
-      }
-
-    } catch (e) {
-      console.warn('Error leyendo currentUser de localStorage', e);
-    }
+    const u = this.auth.getCurrentUser();
+    this.user = u;
+    this.role = u?.role ?? null;
 
     this.updateNavbarVisibility();
   }
@@ -54,21 +44,13 @@ export class AppComponent implements OnInit {
       '/payment-method'
     ];
 
-    // No navbar en rutas ocultas
     if (hiddenRoutes.some(r => path.includes(r))) {
       this.showNavbar = false;
       return;
     }
 
-    // Mostrar navbar si hay usuario (independiente del rol)
-    if (this.user) {
-      this.showNavbar = true;
-      return;
-    }
-
-    this.showNavbar = false;
+    this.showNavbar = !!this.user;
   }
-
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;

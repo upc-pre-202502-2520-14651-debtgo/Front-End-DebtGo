@@ -1,8 +1,9 @@
 export interface User {
   id: number;
   email: string;
-  role: string;
+  role: 'ENTREPRENEUR' | 'CONSULTANT';
   consultantId?: number | null;
+  token?: string;
 }
 
 export interface RegisterRequest {

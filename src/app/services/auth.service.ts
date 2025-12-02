@@ -47,4 +47,16 @@ export class AuthService {
     isLogged(): boolean {
         return !!this.userSubject.value;
     }
+
+    getCurrentUser(): User | null {
+        const raw = localStorage.getItem('currentUser');
+        if (!raw) return null;
+
+        try {
+            return JSON.parse(raw);
+        } catch (e) {
+            console.warn("Error parsing user", e);
+            return null;
+        }
+    }
 }
