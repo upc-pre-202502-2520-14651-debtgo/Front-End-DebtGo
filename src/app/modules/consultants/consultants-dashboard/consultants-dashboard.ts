@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ConsultantService } from '../../../services/consultants.service';
-import { ConsultantSummary } from '../../../modules//consultants/consultants.model';
+import { ConsultantSummary } from '../../../modules/consultants/consultants.model';
 
 @Component({
   selector: 'app-consultant-dashboard',
@@ -11,10 +11,11 @@ import { ConsultantSummary } from '../../../modules//consultants/consultants.mod
   styleUrls: ['./consultants-dashboard.css']
 })
 export class ConsultantDashboardComponent implements OnInit {
+
   summary?: ConsultantSummary;
   consultantId = Number(localStorage.getItem('consultantId') || 1);
 
-  constructor(private service: ConsultantService) {}
+  constructor(private service: ConsultantService) { }
 
   ngOnInit(): void {
     this.service.getSummary(this.consultantId).subscribe({

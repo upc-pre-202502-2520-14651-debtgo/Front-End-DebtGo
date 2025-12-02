@@ -17,13 +17,10 @@ export interface ConsultantServiceItem {
 }
 
 export interface ConsultantSummary {
-  id: number;
-  fullName: string;
-  specialty: string;
-  rating: number;
-  pricePerHour: number;
-  photoUrl: string;
-  available: boolean;
+  servedClients: number;
+  activeAdvisories: number;
+  publishedServices: number;
+  avgRating: number;
 }
 
 export interface ConsultantCase {
