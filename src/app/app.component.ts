@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet, NavigationEnd } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { CommonModule } from '@angular/common';
 import { User } from './modules/users/user-models/user.model';
@@ -23,33 +23,46 @@ export class AppComponent implements OnInit {
     private auth: AuthService,
     private router: Router
   ) {
-    this.router.events.subscribe(() => this.updateNavbarVisibility());
+    // Detectar cambios de ruta
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.loadUserFromStorage();
+        this.updateNavbarVisibility();
+      }
+    });
   }
 
   ngOnInit(): void {
-    const u = this.auth.getCurrentUser();
-    this.user = u;
-    this.role = u?.role ?? null;
-
+    this.loadUserFromStorage();
     this.updateNavbarVisibility();
   }
 
-  updateNavbarVisibility() {
+  /** Cargar usuario desde localStorage */
+  private loadUserFromStorage(): void {
+    const raw = localStorage.getItem('currentUser');
+
+    if (raw) {
+      const parsed: User = JSON.parse(raw);
+      this.user = parsed ?? null;
+      this.role = parsed?.role ?? null;
+    } else {
+      this.user = null;
+      this.role = null;
+    }
+  }
+
+  /** Mostrar u ocultar navbar */
+  updateNavbarVisibility(): void {
     const path = this.router.url;
 
-    const hiddenRoutes = [
-      '/login',
-      '/register',
-      '/payment-plan',
-      '/payment-method'
-    ];
+    const hiddenRoutes = ['/login', '/register', '/payment-plan', '/payment-method'];
 
-    if (hiddenRoutes.some(r => path.includes(r))) {
+    if (hiddenRoutes.some(r => path.startsWith(r))) {
       this.showNavbar = false;
       return;
     }
 
-    this.showNavbar = !!this.user;
+    this.showNavbar = this.user !== null;
   }
 
   toggleMenu(): void {
@@ -64,6 +77,7 @@ export class AppComponent implements OnInit {
     localStorage.removeItem('currentUser');
     this.user = null;
     this.role = null;
+    this.showNavbar = false;
     this.router.navigate(['/login']);
   }
 }

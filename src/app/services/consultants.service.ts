@@ -19,7 +19,7 @@ export class ConsultantService {
   constructor(private http: HttpClient) { }
 
   listarConsultores(): Observable<Consultant[]> {
-    return this.http.get<Consultant[]>(`${this.api}`);
+    return this.http.get<Consultant[]>(this.api);
   }
 
   getConsultant(id: number): Observable<Consultant> {
@@ -30,44 +30,38 @@ export class ConsultantService {
     return this.http.put<Consultant>(`${this.api}/${id}`, dto);
   }
 
-  getSummary(consultantId: number): Observable<ConsultantSummary> {
-    return this.http.get<ConsultantSummary>(`${this.api}/${consultantId}/summary`);
+  getSummary(id: number): Observable<ConsultantSummary> {
+    return this.http.get<ConsultantSummary>(`${this.api}/${id}/summary`);
   }
 
-  // ==========================
   // SERVICES
-  // ==========================
-  listServices(consultantId: number): Observable<ConsultantServiceItem[]> {
-    return this.http.get<ConsultantServiceItem[]>(`${this.api}/${consultantId}/services`);
+  listServices(id: number): Observable<ConsultantServiceItem[]> {
+    return this.http.get<ConsultantServiceItem[]>(`${this.api}/${id}/services`);
   }
 
-  createService(item: ConsultantServiceItem) {
+  createService(item: ConsultantServiceItem): Observable<any> {
     return this.http.post(`${this.api}/services`, item);
   }
 
-  updateService(id: number, item: ConsultantServiceItem) {
+  updateService(id: number, item: ConsultantServiceItem): Observable<any> {
     return this.http.put(`${this.api}/services/${id}`, item);
   }
 
-  deleteService(id: number) {
+  deleteService(id: number): Observable<any> {
     return this.http.delete(`${this.api}/services/${id}`);
   }
 
-  // ==========================
   // CASES
-  // ==========================
-  listCases(consultantId: number): Observable<ConsultantCase[]> {
-    return this.http.get<ConsultantCase[]>(`${this.api}/requests/by-consultant/${consultantId}`);
+  listCases(id: number): Observable<ConsultantCase[]> {
+    return this.http.get<ConsultantCase[]>(`${this.api}/requests/by-consultant/${id}`);
   }
 
   updateCaseStatus(id: number, status: string): Observable<void> {
     return this.http.patch<void>(`${this.api}/requests/${id}/status`, { status });
   }
 
-  // ==========================
   // METRICS
-  // ==========================
-  getMetrics(consultantId: number): Observable<any> {
-    return this.http.get<any>(`${this.api}/metrics/${consultantId}`);
+  getMetrics(id: number): Observable<any> {
+    return this.http.get<any>(`${this.api}/metrics/${id}`);
   }
 }

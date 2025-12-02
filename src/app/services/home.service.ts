@@ -38,23 +38,23 @@ export interface EducationHighlight {
 @Injectable({ providedIn: 'root' })
 export class HomeService {
 
-  private base = `${environment.apiUrl}/v1/home`;
+  private api = `${environment.apiUrl}/api/v1/home`;
 
   constructor(private http: HttpClient) { }
 
-  getSummary(): Observable<HomeSummary> {
-    return this.http.get<HomeSummary>(`${this.base}/summary`);
+  getSummary() {
+    return this.http.get<HomeSummary>(`${this.api}/summary`);
   }
 
-  getNotifications(limit: number): Observable<HomeNotification[]> {
-    return this.http.get<HomeNotification[]>(`${this.base}/notifications?limit=${limit}`);
+  getNotifications(limit: number) {
+    return this.http.get<HomeNotification[]>(`${this.api}/notifications?limit=${limit}`);
   }
 
-  getMovements(limit: number): Observable<HomeMovement[]> {
-    return this.http.get<HomeMovement[]>(`${this.base}/movements?limit=${limit}`);
+  getMovements(limit: number) {
+    return this.http.get<HomeMovement[]>(`${this.api}/movements?limit=${limit}`);
   }
 
-  getEducationHighlights(limit: number): Observable<EducationHighlight[]> {
-    return this.http.get<EducationHighlight[]>(`${this.base}/education?limit=${limit}`);
+  getEducationHighlights(limit: number) {
+    return this.http.get<EducationHighlight[]>(`${this.api}/education?limit=${limit}`);
   }
 }

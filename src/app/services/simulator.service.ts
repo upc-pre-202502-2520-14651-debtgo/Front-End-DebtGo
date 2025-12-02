@@ -25,7 +25,7 @@ export interface SimulationRes {
 @Injectable({ providedIn: 'root' })
 export class SimulatorService {
 
-  private baseUrl = `${environment.apiUrl}/v1/simulations`;
+  private baseUrl = `${environment.apiUrl}/api/v1/simulations`;
 
   constructor(private http: HttpClient) { }
 

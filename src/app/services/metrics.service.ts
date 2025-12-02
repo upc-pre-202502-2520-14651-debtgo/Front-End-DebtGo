@@ -13,7 +13,7 @@ export interface Metrics {
 @Injectable({ providedIn: 'root' })
 export class MetricsService {
 
-    private api = `${environment.apiUrl}/v1/metrics`;
+    private api = `${environment.apiUrl}/api/v1/metrics`;
 
     constructor(private http: HttpClient) { }
 

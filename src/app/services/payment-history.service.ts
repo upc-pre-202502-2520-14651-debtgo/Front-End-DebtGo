@@ -13,7 +13,7 @@ export interface PaymentHistory {
 
 @Injectable({ providedIn: 'root' })
 export class PaymentHistoryService {
-  private apiUrl = `${environment}/v1/payments/history`;
+  private apiUrl = `${environment}/api/v1/payments/history`;
 
   constructor(private http: HttpClient) { }
 

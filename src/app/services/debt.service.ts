@@ -14,7 +14,7 @@ export interface DebtSummary {
 
 @Injectable({ providedIn: 'root' })
 export class DebtService {
-  private baseUrl = `${environment.apiUrl}/v1/debts`;
+  private baseUrl = `${environment.apiUrl}/api/v1/debts`;
 
   constructor(private http: HttpClient) { }
 
